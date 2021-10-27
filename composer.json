@@ -1,0 +1,40 @@
+{
+    "name": "caiocesar173/laravel-utils",
+    "description": "Utils Laravel Package",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4",
+        "illuminate/contracts": "^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Caiocesar173\\Utils\\": "src/"
+        } 
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Caiocesar173\\Utils\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Caiocesar173\\Utils\\Providers\\UtilsServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "caiocesar173",
+            "email": "caiocesar173caiocesar173@gmail.com"
+        }
+    ]
+}
