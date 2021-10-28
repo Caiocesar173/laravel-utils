@@ -40,8 +40,8 @@ class Validation
         return true;
     }
 
-    public function ValidationErrorsToString(array $errArray) {
-        $valArr = array();
+    public static function ValidationErrorsToString(array $errArray) {
+        $valArr = [];
         foreach ($errArray as $key => $value) { 
             $errStr = $key.' '.$value[0];
             array_push($valArr, $errStr);
