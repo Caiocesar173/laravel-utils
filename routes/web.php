@@ -26,13 +26,6 @@
 |   });
 */
 
-$routes = array_diff(scandir(__DIR__.'/web'), array('..', '.'));
+use Caiocesar173\Utils\Classes\Routes;
 
-(env('UTILS_WEB_ROUTES_ENABLE') === TRUE) ? require_web_routes($routes) : '';
-
-function require_web_routes($routes)
-{
-    foreach($routes as $route) {
-        require_once("web/$route");
-    }
-}
+(env('UTILS_API_ROUTES_ENABLE') === TRUE) ? Routes::RequirePath(__DIR__.'/web') : '';

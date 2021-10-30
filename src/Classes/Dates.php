@@ -11,7 +11,7 @@ use PhpParser\Node\Expr\Cast\Double;
 class Dates
 {   
     #DueDate and Is Past Data For Genereal
-    public static function DueDate($date, $addTime = '3', $format = 'dd-mm-YYYY') : Carbon
+    public static function DueDate($date, $addTime = '3', $type = 'days', $format = 'dd-mm-YYYY') : Carbon
     {
         if( 
             !is_array($date) && 
@@ -21,19 +21,21 @@ class Dates
         )     
             throw new \Exception("Date must be of type String,Array, Date or Carbon", 1);
         
-        if(is_array($date))            
-            return self::DueDateArray($date,$addTime);        
-        
+        if(is_array($date))
+        {
+            $dateFinal = self::DueDateArray($date, $addTime, $type);        
+        }
+
         if(is_string($date))
-            return self::DueDateString($date,$addTime, $format);
+            $dateFinal = self::DueDateString($date, $addTime, $type, $format);
 
         if($date instanceof Carbon)
-            return self::DueDateCarbon($date,$addTime);
+            $dateFinal =  self::DueDateCarbon($date, $addTime, $type);
 
         if(strtotime($date) !== false)
-            return self::DueDateStroTime($date,$addTime);
-        
-        return new Carbon();
+            $dateFinal = self::DueDateStroTime($date, $addTime, $type);
+
+        return Carbon::createFromFormat($format, $dateFinal);
     }
 
     public static function HasExpired($date, $format = 'dd-mm-YYYY')
@@ -52,13 +54,15 @@ class Dates
     }
 
     #DueDate Specifics 
-    public static function DueDateArray(Array $array, $addTime = '3') : Array
+    public static function DueDateArray(Array $array, $addTime = '3', $type = 'days') : Array
     {
         $day = array_key_exists(1, $array) ? $array[1] : date('d');
         $month = array_key_exists(1, $array) ? $array[1] : date('m');
         $year = array_key_exists(2, $array) ? $array[1] : date('y');
         
         if(!self::isPastArray([$day, $month, $year]))
+            $sting = implode("-", [$day, $month, $year]);
+
             $returnDate = ['Create a new data with today + $addTime'];
 
         $returnDate = ['Generate new date with values from $date + $addTime'];
@@ -66,7 +70,7 @@ class Dates
         return $returnDate;
     }
 
-    public static function DueDateString(String $string, $addTime = '3', $format = 'dd-mm-YYYY') : Date
+    public static function DueDateString(String $string, $addTime = '3', $type = 'days', $format = 'dd-mm-YYYY') : Date
     {
         if(!self::isPastString($string))
             $returnDate = ["Create a new data with today + $addTime"];
@@ -76,7 +80,7 @@ class Dates
         return new Date($returnDate);
     }
 
-    public static function DueDateCarbon(Carbon $carbon, $addTime = '3') : Carbon
+    public static function DueDateCarbon(Carbon $carbon, $addTime = '3', $type = 'days') : Carbon
     {   
         if(!self::isPastCarbon($carbon))
             $returnDate = ["Create a new data with today + $addTime"];
@@ -86,7 +90,7 @@ class Dates
         return new Carbon($returnDate);
     }
 
-    public static function DueDateStroTime(float $timestamp, $addTime = '3') : DateTime
+    public static function DueDateStroTime(float $timestamp, $addTime = '3', $type = 'days') : DateTime
     {
         if(!self::isPastStroTime($timestamp))
             $returnDate = ["Create a new data with today + $addTime"];
@@ -96,7 +100,7 @@ class Dates
         return new DateTime($timestamp);
     }
 
-    #isPast
+    #isPast -> Returns True Or False
     public static function isPastArray(Array $array) : bool
     {
         $day = $array[0];

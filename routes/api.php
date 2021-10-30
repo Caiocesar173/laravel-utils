@@ -26,13 +26,6 @@
 |   });
 */
 
-$routes = array_diff(scandir(__DIR__.'/api'), array('..', '.'));
+use Caiocesar173\Utils\Classes\Routes;
 
-(env('UTILS_API_ROUTES_ENABLE') === TRUE) ? require_api_routes($routes) : '';
-
-function require_api_routes($routes)
-{
-    foreach($routes as $route) {
-        require_once("api/$route");
-    }
-}
+(env('UTILS_API_ROUTES_ENABLE') === TRUE) ? Routes::RequirePath(__DIR__.'/api') : '';
