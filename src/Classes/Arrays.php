@@ -13,4 +13,12 @@ class Arrays
     
         return $flatten;
     }
+
+    public static function Separate(array $array)
+    {
+        $keys = array_keys($array);
+        $values = array_values($array);
+
+        return ['keys' => $keys, 'values' => $values];
+    }
 }
