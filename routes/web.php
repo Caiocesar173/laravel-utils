@@ -28,4 +28,4 @@
 
 use Caiocesar173\Utils\Classes\Routes;
 
-(env('UTILS_API_ROUTES_ENABLE') === TRUE) ? Routes::RequirePath(__DIR__.'/web') : '';
+(env('UTILS_WEB_ROUTES_ENABLE') === TRUE) ? Routes::RequirePath(__DIR__.'/web') : '';

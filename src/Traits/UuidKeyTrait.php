@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Trait UuidKey
+ * Trait UuidKeyTrait
  */
 trait UuidKeyTrait
 {
@@ -36,7 +36,7 @@ trait UuidKeyTrait
      * Add behavior to creating and saving Eloquent events.
      * @return void
      */
-    public static function bootUuidKey()
+    public static function bootUuidKeyTrait()
     {
         // Create a UUID to the model if it does not have one
         static::creating(function (Model $model) {
