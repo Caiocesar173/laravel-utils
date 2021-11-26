@@ -10,13 +10,14 @@ trait RepositoryServiceProviderTrait
         $pathInterfaces     = str_replace('/','\\', config('repository.generator.paths.interfaces'));
         $tempFiles          = glob( "{$path}/{$pathInterfaces}/*php" );
 
-        foreach($tempFiles as $file):
+
+        foreach($tempFiles as $file){
 
             $repository     = pathinfo($file)['filename'];
             $interface      = "{$folder}\\{$pathInterfaces}\\{$repository}";
             $eloquent       = "{$folder}\\{$pathRepositories}\\{$repository}Eloquent";
-
-            $this->app->bind($interface, $eloquent);
-        endforeach;
+            
+            app()->bind($interface, $eloquent);
+        }
     }
 }

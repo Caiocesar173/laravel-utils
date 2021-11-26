@@ -18,7 +18,7 @@ class CreateStatusesTable extends Migration
     {
         Schema::create('statuses', function(Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->char('title', 45);
+            $table->string('name', 100)->default('Active');
             $table->tinyInteger('visible')->default(1);
             $table->tinyInteger('active')->default(1);
             $table->nullableMorphs('responsable');
