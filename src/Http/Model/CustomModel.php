@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\DB;
 use CaioCesar173\Utils\Enum\StatusEnum;
 use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
 use Caiocesar173\Utils\Traits\UuidKeyTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 abstract class CustomModel extends Model implements Transformable, AuditableContract
 {
-    use TransformableTrait, UuidKeyTrait, Auditable;
+    use TransformableTrait, UuidKeyTrait, Auditable, HasFactory;
 
     public static function create(Array $data)
     {

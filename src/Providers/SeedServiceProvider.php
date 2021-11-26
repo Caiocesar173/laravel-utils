@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class SeedServiceProvider extends ServiceProvider
 {
-    protected $seeds_path = '/../../Database/Seeds';
+    private $seeds_path;
 
     /**
      * Bootstrap services.
@@ -27,6 +27,8 @@ class SeedServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->seeds_path = __DIR__.'/../../Database/Seeds';
+
         if(env('UTILS_SEEDS_ENABLE') !== TRUE)
             return;
 
@@ -83,13 +85,16 @@ class SeedServiceProvider extends ServiceProvider
      */
     protected function addSeedsFrom($seeds_path)
     {
-        
-        $file_names = self::getFiles($seeds_path);
+        $file_names = $this->getSeedsEnable();
 
         foreach ($file_names as $filename)
         {
+            if(!class_exists($filename))
+                require_once($filename);
+
             $classes = $this->getClassesFromFile($filename);
-            foreach ($classes as $class) {
+            foreach ($classes as $class) 
+            {   
 
                 $seeded = Seeds::where('seed', $class)->first();
                 if(is_null($seeded))
@@ -145,38 +150,57 @@ class SeedServiceProvider extends ServiceProvider
         return $classes;
     }
 
+    protected function getSeedsEnable()
+    {
+        $seeds = [];
+        $seeds_path = $this->seeds_path;
+
+
+        if( env('UTILS_STATUSES_ENABLE') === TRUE ) 
+            array_push($seeds, self::getFiles("$seeds_path/Statuses"));
+
+
+        if( env('UTILS_GEOLOC_ENABLE') === TRUE ) 
+            array_push($seeds, self::getFiles("$seeds_path/GeoInfo"));
+        
+
+        if( env('UTILS_PERMISSION_ENABLE') === TRUE ) 
+            array_push($seeds, self::getFiles("$seeds_path/Permission"));
+
+
+        return Arrays::Flatten($seeds);
+    }
+
 
     protected static function getFiles($seeds_path): array
     {
-        if( env('UTILS_GEOLOC_ENABLE') === TRUE ) 
-        {
-            $seeds_path = "$seeds_path/GeoInfo";
+        $path = scandir($seeds_path);
+
+        $folders = array_diff($path, array('.', '..'));
         
-            $path = scandir("$seeds_path");
-            $folders = array_diff($path, array('.', '..'));
-            
-            $files = [];
-            foreach( $folders as $folder )
+        $files = [];
+        foreach( $folders as $folder )
+        {   
+            $files_ = "$seeds_path/$folder";
+
+            if(is_dir($files_))
             {
                 $path = scandir("$seeds_path/$folder");
                 $file_set = array_diff($path, array('.', '..'));
-    
+            
                 $files_ = [];
                 foreach($file_set as $file){
                     $file = "$seeds_path/$folder/$file";
-                    array_push($files_, $file);
                     require_once($file);
+                    array_push($files_, $file);
                 }
-    
                 
-                array_push($files, $files_);
-    
             }
-            $file_names = Arrays::Flatten($files);
-    
-            return $file_names;
+            
+            array_push($files, $files_);
         }
-
-        return glob($seeds_path);
+        $file_names = Arrays::Flatten($files);
+    
+        return $file_names;
     }
 }

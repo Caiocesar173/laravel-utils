@@ -5,18 +5,19 @@ namespace Caiocesar173\Utils\Entities;
 use Caiocesar173\Utils\Http\Model\CustomModel;
 
 
-class Statuses extends CustomModel
+class Permission extends CustomModel 
 {
-    protected $table = 'statuses';
+    protected $table = 'permission';
     protected $primaryKey = 'id';
-
+    
     protected $fillable = [
         'name',
-        'visible',
-        'active',
-        'responsable'
+        'code',
+        'icon',
+        'icon_type',
     ];
-   
+
+
     public static function rules($id = null, $merge = [])
     {
         //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ",$id" : ''),
@@ -27,3 +28,4 @@ class Statuses extends CustomModel
         );
     }
 }
+

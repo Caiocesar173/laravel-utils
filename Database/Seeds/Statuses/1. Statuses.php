@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use Caiocesar173\Utils\Entities\Statuses;
 
 
-class Status extends Seeder
+class Statusess extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,22 +21,22 @@ class Status extends Seeder
 
         $statuses = [
             [
-                'title' => 'Active', 
+                'name' => 'Active', 
                 'visible' => '1', 
                 'active' => '1',
             ],
             [
-                'title' => 'Edited', 
+                'name' => 'Edited', 
                 'visible' => '1', 
                 'active' => '1',
             ],
             [
-                'title' => 'Inactive', 
+                'name' => 'Inactive', 
                 'visible' => '0', 
                 'active' => '1',
             ],
             [
-                'title' => 'Excluded', 
+                'name' => 'Excluded', 
                 'visible' => '0', 
                 'active' => '1',
             ]
@@ -45,7 +45,7 @@ class Status extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('statuses')->truncate();
         foreach ($statuses as $status) {
-            $this->command->info('Inserted status from' . $status['title'] . ' [' . count($status) . ']..');
+            $this->command->info('Inserted status from' . $status['name'] . ' [' . count($status) . ']..');
             Statuses::create($status);
         }
         Schema::enableForeignKeyConstraints();
