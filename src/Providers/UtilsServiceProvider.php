@@ -23,7 +23,7 @@ class UtilsServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(__DIR__ .'/../../Database/Migrations');
 
         if( env('UTILS_PERMISSION_ENABLE') === TRUE ) 
-            $this->loadMigrationsFrom(__DIR__ .'/../../Database/Migrations');
+            $this->loadMigrationsFrom(__DIR__ .'/../../Database/Permission');
         
         if( env('UTILS_GEOLOC_ENABLE') === TRUE ) 
         {
