@@ -40,14 +40,17 @@ class ApiReturn
 		if(!empty($data))
 			$response['data'] = $data;
 
-		if(!is_array($redirect) && !is_string($redirect))
-			throw new \Exception("Redirect must be type array or string", 1);
+		if(!is_null($redirect))
+		{
+			if(!is_array($redirect) && !is_string($redirect))
+				throw new \Exception("Redirect must be type array or string", 1);
 
-		if(is_array($redirect))
-			$response['redirect'] = $redirect;
-			
-		if(is_string($redirect))
-			$response['redirect'] = $redirect;
+			if(is_array($redirect))
+				$response['redirect'] = $redirect;
+				
+			if(is_string($redirect))
+				$response['redirect'] = $redirect;
+		}
 
 		return  Response::json($response, $code);
 	}
