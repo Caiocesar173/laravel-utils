@@ -15,7 +15,7 @@ trait RepositoryServiceProviderTrait
 
             $repository     = pathinfo($file)['filename'];
             $interface      = "{$folder}\\{$pathInterfaces}\\{$repository}";
-            $eloquent       = "{$folder}\\{$pathRepositories}\\{$repository}Eloquent";
+            $eloquent       = "{$folder}\\{$pathRepositories}\\Eloquent\\{$repository}Eloquent";
             
             app()->bind($interface, $eloquent);
         }
