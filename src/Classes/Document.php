@@ -1,10 +1,10 @@
 <?php
 
+use Caiocesar173\Utils\Classes\Format;
 use Caiocesar173\Utils\Classes\Mask;
 
-class CPF_CNPJ
+class Document
 {
-
     public static function Validate($document)
     {
         if (empty($document))
@@ -107,5 +107,32 @@ class CPF_CNPJ
     public static function FormatCPF($cpf)
     {
         return Mask::Apply($cpf, "###.###.###-##");
+    }
+
+    public static function OnlyNumber($document)
+    {
+        if (empty($document)) 
+            return false;
+        
+        return self::Check($document) === 'CPF' ? self::CPFNumber($document) : self::CNPJNumber($document);
+    }
+
+    public static function CPFNumber($numero)
+    {
+        $numero = Format::OnlyNumber($numero);
+        if (empty($numero)) {
+            return '';
+        }
+        return vsprintf('%03d.%3d.%3d-%2d', sscanf($numero, '%3d%3d%3d%2d'));
+    }
+
+    public static function CNPJNumber($numero)
+    {
+        $numero = Format::OnlyNumber($numero);
+        if (empty($numero)) {
+            return '';
+        }
+                        
+        return vsprintf('%2d.%3d.%3d/%4d-%2d', sscanf($numero, '%2d%3d%3d%4d%2d'));
     }
 }

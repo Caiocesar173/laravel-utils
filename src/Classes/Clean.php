@@ -34,4 +34,19 @@ class Clean
     {
         return preg_replace('/\s+/', '', $string);
     }
+
+    public static function Number($numero, $prefix = 'R$')
+    {
+        $numero = str_replace([$prefix, '%'], '', $numero);
+        $numero = str_replace('.', '', $numero);
+        return trim(str_replace(',', '.', $numero));
+    }
+
+    public static function HTML($html)
+    {
+        $html = strip_tags($html);
+        $html = str_replace('&nbsp;', '', $html);
+
+        return trim($html);
+    }
 }
