@@ -1,4 +1,5 @@
 <?php
+namespace Caiocesar173\Utils\Classes;
 
 use Caiocesar173\Utils\Classes\Format;
 use Caiocesar173\Utils\Classes\Mask;
