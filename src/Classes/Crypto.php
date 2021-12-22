@@ -5,8 +5,8 @@ namespace Caiocesar173\Utils\Classes;
 
 class Crypto
 {
-    protected $key = '!A%D*G-Ka= U@Xp2_5v8y/B?Ç(H+Mb)';
-    protected $chars =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`-=~!@#$%^&*()_+,./<>?;:[]{}\| ';
+    protected static $key = '!A%D*G-Ka= U@Xp2_5v8y/B?Ç(H+Mb)';
+    protected static $chars =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`-=~!@#$%^&*()_+,./<>?;:[]{}\| ';
 
 
     public static function Encrypt(string $message, string $key = null): String
