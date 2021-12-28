@@ -45,14 +45,10 @@ abstract class CustomController extends Controller
             }
         );
         $data = [
-            'results' => $data, 
-            'pagination' => [
-                'more' => false
-            ], 
-            'valid' => true
+            'data' => $data
         ];
 
-        return ApiReturn::SuccessMessage('success', 200, $data);
+        return ApiReturn::SuccessMessage('Success', 200, $data);
     }
 
     protected static function StoreRepositoty(CustomBaseRepository $repository, Request $request, &$entity = null)

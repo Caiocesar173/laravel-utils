@@ -10,5 +10,18 @@ use Caiocesar173\Utils\Enum\CustomEnum;
 */
 abstract class StatusEnum extends CustomEnum
 {
-    const Excluded = 'excluded';
+
+    const ACTIVE   = 'ativo';
+    const INACTIVE = 'inativo';
+    const BLOCKED  = 'bloqueado';
+    const EXCLUDED = 'excluded';
+
+    public static function lists() {
+        return [
+            self::ACTIVE   => 'Ativo',
+            self::INACTIVE => 'Inativo',
+            self::BLOCKED  => 'Bloqueado',
+            self::EXCLUDED => 'Excluded'
+        ];
+    }
 }
