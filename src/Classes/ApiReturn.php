@@ -25,7 +25,6 @@ class ApiReturn
 	public static function ErrorMessage($message = 'Ops, algo deu errado...', $code = 409, $status = false){
 		return Response::json([
 			'error' => [
-				'status' => $status,
 				'description' => $message
 			]
 		], $code);
@@ -33,7 +32,6 @@ class ApiReturn
 
 	public static function SuccessMessage($message = 'Success', $code = 200, $data = [], $redirect = null, $status = true){
 		$response = [
-			'status' => $status,
 			'description' => $message	
 		];
 
