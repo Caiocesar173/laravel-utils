@@ -2,6 +2,7 @@
 
 namespace Caiocesar173\Utils\Classes;
 
+use Exception;
 use Illuminate\Support\Facades\Response;
 
 ########################################
@@ -20,18 +21,28 @@ class ApiReturn
 {
 	const DefaultError = DefaultError;
 	const DefaultSuccess = DefaultSuccess;
-	
+
+	public static function ErrorException(Exception $exception, $code = 409, $status = false)
+	{	
+		$error = $exception->getMessage();
+		if(env('APP_DEBUG') === true)
+			$error = $exception->getTraceAsString();
+
+		return self::ErrorMessage($error, $code, $status);
+	}
 
 	public static function ErrorMessage($message = 'Ops, algo deu errado...', $code = 409, $status = false){
 		return Response::json([
 			'error' => [
+				'status' => $status,
 				'description' => $message
 			]
 		], $code);
 	}
 
-	public static function SuccessMessage($message = 'Success', $code = 200, $data = [], $redirect = null, $status = true){
+	public static function SuccessMessage($message = 'Successo', $code = 200, $data = [], $redirect = null, $status = true){
 		$response = [
+			'status' => $status,
 			'description' => $message	
 		];
 
