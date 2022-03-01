@@ -4,9 +4,9 @@ namespace Caiocesar173\Utils\Repositories\Eloquent;
 
 use Prettus\Repository\Criteria\RequestCriteria;
 
-use Caiocesar173\Utils\Entities\Contry;
-use Caiocesar173\Utils\Repositories\ContryRepository;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Entities\Country;
+use Caiocesar173\Utils\Repositories\CountryRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 
 /**
@@ -14,7 +14,7 @@ use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class CountryRepositoryEloquent extends CustomBaseRepository implements ContryRepository
+class CountryRepositoryEloquent extends RepositoryAbstract implements CountryRepository
 {
     /**
      * Specify Model class name
@@ -23,7 +23,7 @@ class CountryRepositoryEloquent extends CustomBaseRepository implements ContryRe
      */
     public function model()
     {
-        return Contry::class;
+        return Country::class;
     }
 
     /**

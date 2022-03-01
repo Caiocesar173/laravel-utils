@@ -2,7 +2,7 @@
 namespace Caiocesar173\Utils\Observes;
 
 use \Cache;
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 /**
  * @package Caiocesar173\Utils\Http\Model\CustomModel

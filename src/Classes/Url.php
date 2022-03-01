@@ -7,13 +7,11 @@ class Url
 {
     public static function Exists($url)
     {
-        if( is_null($url) ){
+        if( is_null($url) )
             return false;
-        }
 
-        if( strpos($url, 'http') === false ){
+        if( strpos($url, 'http') === false )
             return false;
-        }
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_NOBODY, true);

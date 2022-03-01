@@ -6,7 +6,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 use Caiocesar173\Utils\Entities\Language;
 use Caiocesar173\Utils\Repositories\LanguageRepository;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 
 /**
@@ -14,7 +14,7 @@ use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class LanguageRepositoryEloquent extends CustomBaseRepository implements LanguageRepository
+class LanguageRepositoryEloquent extends RepositoryAbstract implements LanguageRepository
 {
     /**
      * Specify Model class name

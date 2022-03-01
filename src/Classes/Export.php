@@ -4,7 +4,6 @@ namespace Caiocesar173\Utils\Classes;
 
 use Caiocesar173\Utils\Classes\ApiReturn;
 use Caiocesar173\Utils\Classes\DataTable;
-use Illuminate\Support\Facades\Response;
 
 
 class Export
@@ -29,13 +28,13 @@ class Export
         $callback = function() use ($listArray) 
         {
             $FH = fopen('php://output', 'w');
-            foreach ($listArray as $row) { 
+            foreach ($listArray as $row)
                 fputcsv($FH, $row, ';');
-            }
+            
             fclose($FH);
         };
 
-        return Response::stream($callback, 200, $headers); //use Illuminate\Support\Facades\Response;
+        return ApiReturn::Stream($callback, $headers);
     }
 
     public static function DataTable(DataTable $instance, $filename= 'file')
@@ -43,13 +42,12 @@ class Export
         $instance = $instance->getData();
         $listArray = [];
 
-        foreach($instance as $onlyData){ 
+        foreach($instance as $onlyData)
             array_push( $listArray ,(array)$onlyData);
-        }
         
         if(empty($listArray))
             throw new \Exception("No records found", 1);
 
-        return self::csv("$filename.csv", $listArray);
+        return self::CSV("$filename.csv", $listArray);
     }
 }

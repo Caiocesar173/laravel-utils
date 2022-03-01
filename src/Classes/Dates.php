@@ -22,9 +22,7 @@ class Dates
             throw new \Exception("Date must be of type String,Array, Date or Carbon", 1);
         
         if(is_array($date))
-        {
             $dateFinal = self::DueDateArray($date, $addTime, $type);        
-        }
 
         if(is_string($date))
             $dateFinal = self::DueDateString($date, $addTime, $type, $format);

@@ -6,7 +6,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 use Caiocesar173\Utils\Entities\City;
 use Caiocesar173\Utils\Repositories\CityRepository;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 
 /**
@@ -14,7 +14,7 @@ use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class CityRepositoryEloquent extends CustomBaseRepository implements CityRepository
+class CityRepositoryEloquent extends RepositoryAbstract implements CityRepository
 {
     /**
      * Specify Model class name

@@ -4,7 +4,7 @@ namespace  Caiocesar173\Utils\Classes;
 
 class Colors
 {
-    private static $cores = null;
+    private static $colors = null;
 
     public static function lists()
     {
@@ -36,17 +36,17 @@ class Colors
 
     public static function next()
     {
-        if( is_null(self::$cores) )
-            self::$cores = self::lists();
+        if( is_null(self::$colors) )
+            self::$colors = self::lists();
 
-        return next(self::$cores);
+        return next(self::$colors);
     }
 
     public static function reset()
     {
-        if( is_null(self::$cores) )
-            self::$cores = self::lists();
+        if( is_null(self::$colors) )
+            self::$colors = self::lists();
 
-        reset(self::$cores);
+        reset(self::$colors);
     }
 }

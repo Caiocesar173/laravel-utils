@@ -4,7 +4,7 @@ namespace Caiocesar173\Utils\Repositories\Eloquent;
 
 use Caiocesar173\Utils\Entities\RequestLog;
 use Caiocesar173\Utils\Repositories\RequestLogRepository;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 use Prettus\Repository\Criteria\RequestCriteria;
 
@@ -14,7 +14,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class RequestLogRepositoryEloquent extends CustomBaseRepository implements RequestLogRepository
+class RequestLogRepositoryEloquent extends RepositoryAbstract implements RequestLogRepository
 {
     /**
      * Specify Model class name

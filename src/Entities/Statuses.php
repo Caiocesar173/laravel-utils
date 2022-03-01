@@ -2,10 +2,10 @@
 
 namespace Caiocesar173\Utils\Entities;
 
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 
-class Statuses extends CustomModel
+class Statuses extends ModelAbstract
 {
     protected $table = 'statuses';
     protected $primaryKey = 'id';
@@ -16,14 +16,4 @@ class Statuses extends CustomModel
         'active',
         'responsable'
     ];
-   
-    public static function rules($id = null, $merge = [])
-    {
-        //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ",$id" : ''),
-
-        return array_merge(
-            [],
-            $merge
-        );
-    }
 }

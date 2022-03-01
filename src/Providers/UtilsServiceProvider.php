@@ -2,10 +2,18 @@
 
 namespace Caiocesar173\Utils\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Caiocesar173\Utils\Exceptions\ApiException;
+use Illuminate\Routing\Router;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+
+use Caiocesar173\Utils\Exceptions\NotFoundException;
+use Caiocesar173\Utils\Traits\RepositoryServiceProviderTrait;
 
 use Caiocesar173\Utils\Http\Middleware\LogMiddleware;
-use Caiocesar173\Utils\Traits\RepositoryServiceProviderTrait;
+use Caiocesar173\Utils\Http\Middleware\AuthApiMiddleware;
+use Caiocesar173\Utils\Http\Middleware\SetUserApiMiddleware;
+use Caiocesar173\Utils\Http\Middleware\AccessControlMiddleware;
+use Illuminate\Support\ServiceProvider;
 
 class UtilsServiceProvider extends ServiceProvider
 {
@@ -14,7 +22,10 @@ class UtilsServiceProvider extends ServiceProvider
     public function boot()
     {
         if (env('UTILS_WEB_ROUTES_ENABLE') === TRUE)
-            $this->loadViewsFrom(__DIR__.'/../../resources/views', 'utils');
+            $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
+
+        if (env('UTILS_API_ROUTES_ENABLE') === TRUE)
+            $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
         
         if (env('UTILS_LOGS_ENABLE') === TRUE)
             $this->loadMigrationsFrom(__DIR__ .'/../../Database/LogMigrations');
@@ -33,11 +44,28 @@ class UtilsServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(__DIR__ .'/../../Database/GeoInfo/Currency');
             $this->loadMigrationsFrom(__DIR__ .'/../../Database/GeoInfo/Areas');
         }
-       
-        $this->registerRepository('src', __DIR__ .'/../Repositories');
-        
+
         $this->app->register(SeedServiceProvider::class);
+        $this->app->singleton(ExceptionHandler::class, NotFoundException::class);
+        $this->app->singleton(ExceptionHandler::class, ApiException::class);
+
+        if( env('UTILS_LOGS_ENABLE') === TRUE ) 
+            app(Router::class)->aliasMiddleware('Log', LogMiddleware::class);
+
+        if( env('UTILS_AUTHENTICATION_ENABLE') === TRUE ) 
+        {
+            $this->app->register(\Tymon\JWTAuth\Providers\LaravelServiceProvider::class);
+
+            app(Router::class)->aliasMiddleware('AuthApi', AuthApiMiddleware::class);
+            app(Router::class)->aliasMiddleware('SetUserApi', SetUserApiMiddleware::class);
+            app(Router::class)->aliasMiddleware('AccessControl', AccessControlMiddleware::class);
+        }
+
         
-        app('router')->middleware('BackLog', LogMiddleware::class);
+    }
+
+    public function register()
+    {
+        $this->registerLocalRepository('src', __DIR__ .'/../Repositories');
     }
 }

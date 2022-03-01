@@ -2,10 +2,10 @@
 
 namespace Caiocesar173\Utils\Entities;
 
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 
-class Continent extends CustomModel
+class Continent extends ModelAbstract
 {
     protected $table = 'continent';
     protected $primaryKey = 'id';
@@ -14,14 +14,4 @@ class Continent extends CustomModel
         'name',
 		'code',
     ];
-   
-    public static function rules($id = null, $merge = [])
-    {
-        //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ",$id" : ''),
-
-        return array_merge(
-            [],
-            $merge
-        );
-    }
 }

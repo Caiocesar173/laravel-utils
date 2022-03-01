@@ -6,7 +6,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 use Caiocesar173\Utils\Entities\PhoneArea;
 use Caiocesar173\Utils\Repositories\PhoneAreaRepository;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 
 /**
@@ -14,7 +14,7 @@ use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class PhoneAreaRepositoryEloquent extends CustomBaseRepository implements PhoneAreaRepository
+class PhoneAreaRepositoryEloquent extends RepositoryAbstract implements PhoneAreaRepository
 {
     /**
      * Specify Model class name

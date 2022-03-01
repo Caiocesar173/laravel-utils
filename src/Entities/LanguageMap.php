@@ -2,10 +2,10 @@
 
 namespace Caiocesar173\Utils\Entities;
 
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 
-class LanguageMap extends CustomModel
+class LanguageMap extends ModelAbstract
 {
     protected $table = 'language_map';
     protected $primaryKey = 'id';
@@ -19,14 +19,4 @@ class LanguageMap extends CustomModel
         'code' => 'array',
         'usage' => 'array'
     ];
-
-    public static function rules($id = null, $merge = [])
-    {
-        //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ",$id" : ''),
-
-        return array_merge(
-            [],
-            $merge
-        );
-    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
+use Caiocesar173\Utils\Enum\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,13 +21,13 @@ class CreatePermissionItemTable extends Migration
             $table->string('name', 220);
 			$table->string('code', 220)->nullable();
 
-            $table->uuid('status_id');
-
             $table->string('icon', 220)->nullable();
 			$table->string('icon_type', 220)->nullable();
+
+            $table->enum('type', PermissionItemTypeEnum::keys())->nullable();
+            $table->enum('status', StatusEnum::keys());
           
             $table->timestamps();
-            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
         });
     }
 
