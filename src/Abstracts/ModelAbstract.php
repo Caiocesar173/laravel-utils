@@ -58,10 +58,10 @@ abstract class ModelAbstract extends Model implements Transformable, AuditableCo
             if (is_null($model)) 
                 return "unable to find any results, searching: ($findBy = $identifier)";
 
-            if ($model->save()) 
+            if ($model->save( $data )) 
             {
                 DB::commit();
-                return true;
+                return $model;
             }
 
             DB::rollback();

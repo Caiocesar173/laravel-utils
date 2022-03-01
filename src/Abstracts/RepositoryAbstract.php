@@ -86,7 +86,7 @@ abstract class RepositoryAbstract extends BaseRepository
             }
      
         endif;
-        $query = $this->applyCriteriCustomModel($query);
+        $query = $this->applyCriteriModelAbstract($query);
 
         if (count($colums) > 1)
             return $query->pluckMultiple($id, $colums);
@@ -94,7 +94,7 @@ abstract class RepositoryAbstract extends BaseRepository
         return $query->pluck($colum, $id);
     }
 
-    protected function applyCriteriaCustomModel($model)
+    protected function applyCriteriaModelAbstract($model)
     {
         if (self::$skipCriteria === true) 
             return $model;
@@ -113,7 +113,7 @@ abstract class RepositoryAbstract extends BaseRepository
         return $model;
     }
 
-    protected static function getAttributes(CustomModel $model, array $attributes): array
+    protected static function getAttributes(ModelAbstract $model, array $attributes): array
     {
         if (!empty($attributes['__validador__'])) 
         {
@@ -128,7 +128,7 @@ abstract class RepositoryAbstract extends BaseRepository
         return $attributes;
     }
 
-    protected static function saveRelation(CustomModel $model, CustomModel $relation, string $Method, array $list)
+    protected static function saveRelation(ModelAbstract $model, ModelAbstract $relation, string $Method, array $list)
     {
         $listProduct = [];
         foreach ($list as $dataModelRelation) 
