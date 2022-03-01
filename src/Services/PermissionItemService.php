@@ -29,8 +29,16 @@ class PermissionItemService extends ServiceAbstract
         {
             foreach($item as $element)
             {   
-                $created = $this->getRepository()->create((array)$element);
-                array_push($items, $created);
+                if(!is_array($element))
+                    $element = (array) $element;
+
+                $item = $this->getRepository()->where('code', $element['code'])->first();
+                if( is_null($item) )
+                    $item = $this->getRepository()->create((array)$element);
+                else
+                    $item = $this->getRepository()->update((array)$element, $item->id);
+
+                array_push($items, $item);
             }
             return $items;
         }
