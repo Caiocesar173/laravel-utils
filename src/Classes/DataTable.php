@@ -42,8 +42,8 @@ class Datatable extends Model
         $this->groupBy       = $groupBy != null ? DB::raw($groupBy) : $groupBy;
         $this->where_in      = $where_in;
         
+        $this->table = $table;
         $this->setDateFormat($dateFormat);
-        $this->setTable($table);
         $this->getRequest($request);
         $this->setOffset($this->offset);
         $this->setOrderBy();
@@ -64,11 +64,6 @@ class Datatable extends Model
         $this->simConnStatus    = $request->input('section');
         $this->field            = $request->input('field'); 
         $this->filter           = $request->input('filters');
-    }
-
-    public function setTable($table)
-    {
-        $this->table = $table;
     }
 
     public function setDateFormat($status)
@@ -277,40 +272,5 @@ class Datatable extends Model
         ];
 
         return $json_data;
-    }
-
-    public function teste()
-    {
-        foreach ($this->columnSearch as $coluna) {
-            if (is_array($coluna))
-                echo key($coluna) . ' ' . $coluna[key($coluna)]['valor'];
-            
-        }
-    }
-
-    private function getFilter()
-    {
-        $filterArray = [];
-
-        if(!empty($this->operatorSearch) && isset($this->operatorSearch)){
-            $filterArray[] = array(
-                'stock.id_provider',
-                $this->operatorSearch,
-            );
-        }
-        if(!empty($this->simCardStatus) && isset($this->simCardStatus)){
-            $filterArray[] = array(
-                'sl.status',
-                $this->simCardStatus,
-            );
-        }
-        if(!empty($this->simConnStatus)){
-            $filterArray[] = array(
-                'sim.conn_status',
-                $this->simConnStatus,
-            );
-        }
-
-        return $filterArray;
     }
 }

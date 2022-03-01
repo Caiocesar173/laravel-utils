@@ -2,10 +2,10 @@
 
 namespace Caiocesar173\Utils\Entities;
 
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 
-class State extends CustomModel
+class State extends ModelAbstract
 {
     protected $table = 'state';
     protected $primaryKey = 'id';
@@ -18,14 +18,4 @@ class State extends CustomModel
         'latitude',
         'longitude',
     ];
-   
-    public static function rules($id = null, $merge = [])
-    {
-        //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ",$id" : ''),
-
-        return array_merge(
-            [],
-            $merge
-        );
-    }
 }

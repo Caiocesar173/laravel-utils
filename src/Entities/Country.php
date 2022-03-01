@@ -2,10 +2,10 @@
 
 namespace Caiocesar173\Utils\Entities;
 
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 
-class Country extends CustomModel
+class Country extends ModelAbstract
 {
     protected $table = 'country';
     protected $primaryKey = 'id';
@@ -22,14 +22,4 @@ class Country extends CustomModel
         'emojiU',
 		'geonameid',
     ];
-   
-    public static function rules($id = null, $merge = [])
-    {
-        //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ",$id" : ''),
-
-        return array_merge(
-            [],
-            $merge
-        );
-    }
 }

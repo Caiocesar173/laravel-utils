@@ -3,7 +3,7 @@
 namespace Caiocesar173\Utils\Repositories\Eloquent;
 
 use Caiocesar173\Utils\Entities\RequestValidation;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 use Caiocesar173\Utils\Repositories\RequestValidationRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 
@@ -13,7 +13,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class RequestValidationRepositoryEloquent extends CustomBaseRepository implements RequestValidationRepository
+class RequestValidationRepositoryEloquent extends RepositoryAbstract implements RequestValidationRepository
 {
     /**
      * Specify Model class name

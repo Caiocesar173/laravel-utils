@@ -46,9 +46,10 @@ class Validation
             $errStr = $key.' '.$value[0];
             array_push($valArr, $errStr);
         }
-        if(!empty($valArr)){
+
+        if(!empty($valArr))
             $errStrFinal = implode(',', $valArr);
-        }
+        
         return $errStrFinal;
     }
 
@@ -71,9 +72,8 @@ class Validation
     {
         $data = [];
 
-        foreach($fields as $field){
+        foreach($fields as $field)
            $data[$field] = $rules; 
-        }
 
         return $data;
     }

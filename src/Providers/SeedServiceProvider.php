@@ -4,16 +4,12 @@
 
 namespace Caiocesar173\Utils\Providers;
 
-use Caiocesar173\Utils\Classes\Arrays;
-use Caiocesar173\Utils\Classes\Routes;
-use Caiocesar173\Utils\Entities\Seeds;
-use Illuminate\Console\Events\CommandFinished;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Caiocesar173\Utils\Classes\Arrays;
+use Caiocesar173\Utils\Entities\Seeds;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Request;
 
 
 class SeedServiceProvider extends ServiceProvider
@@ -68,13 +64,17 @@ class SeedServiceProvider extends ServiceProvider
      */
     protected function addSeedsAfterConsoleCommandFinished()
     {
-        Event::listen(CommandFinished::class, function(CommandFinished $event) {
-            // Accept command in console only,
-            // exclude all commands from Artisan::call() method.
-            if ($event->output instanceof ConsoleOutput) {
-                $this->addSeedsFrom(__DIR__ . $this->seeds_path);
-            }
-        });
+        $migrations = $this->addSeedsFrom(__DIR__ . $this->seeds_path);
+        if(is_null($migrations))
+            echo "\033[0;32mNothing to migrate";
+            
+        
+        //Event::listen(CommandFinished::class, function(CommandFinished $event) {
+        //    // exclude all commands from Artisan::call() method.
+        //    if ($event->output instanceof ConsoleOutput) {
+        //        $this->addSeedsFrom(__DIR__ . $this->seeds_path);
+        //    }
+        //});
     }
 
     /**
@@ -91,17 +91,16 @@ class SeedServiceProvider extends ServiceProvider
         {
             if(!class_exists($filename))
                 require_once($filename);
-
+           
             $classes = $this->getClassesFromFile($filename);
             foreach ($classes as $class) 
             {   
-
                 $seeded = Seeds::where('seed', $class)->first();
                 if(is_null($seeded))
                 {
                     echo "\033[1;33mSeeding:\033[0m {$class}\n";
                     $startTime = microtime(true);
-
+                 
                     $call = Artisan::call('db:seed', [ '--class' => $class, '--force' => '' ]);
 
                     $runTime = round(microtime(true) - $startTime, 2);
@@ -136,6 +135,7 @@ class SeedServiceProvider extends ServiceProvider
         $php_code = file_get_contents($filename);
         $tokens = token_get_all($php_code);
         $count = count($tokens);
+        
         for ($i = 2; $i < $count; $i++) {
             if ($tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING) {
                 $class_name = $tokens[$i][1];
@@ -146,7 +146,7 @@ class SeedServiceProvider extends ServiceProvider
                 }
             }
         }
-
+        
         return $classes;
     }
 
@@ -155,18 +155,58 @@ class SeedServiceProvider extends ServiceProvider
         $seeds = [];
         $seeds_path = $this->seeds_path;
 
-
         if( env('UTILS_STATUSES_ENABLE') === TRUE ) 
-            array_push($seeds, self::getFiles("$seeds_path/Statuses"));
+        {
+            $files = [
+                "$seeds_path/Statuses/Statusess.php",
+            ];
 
+            array_push($seeds, $files);
+        }
 
         if( env('UTILS_GEOLOC_ENABLE') === TRUE ) 
-            array_push($seeds, self::getFiles("$seeds_path/GeoInfo"));
+        {
+            $files = [
+                "$seeds_path/GeoInfo/Geo/Continents.php",
+                "$seeds_path/GeoInfo/Geo/Coutries.php",
+                "$seeds_path/GeoInfo/Geo/States.php",
+                "$seeds_path/GeoInfo/Geo/Cities.php", 
+
+                "$seeds_path/GeoInfo/Areas/NetworkAreas.php", 
+                "$seeds_path/GeoInfo/Areas/PhoneAreas.php", 
+
+                "$seeds_path/GeoInfo/Currency/Currencies.php", 
+
+                "$seeds_path/GeoInfo/Language/Languages.php", 
+                "$seeds_path/GeoInfo/Language/LanguageMaps.php", 
+                
+                "$seeds_path/GeoInfo/Zones/TimeZones.php", 
+                "$seeds_path/GeoInfo/Zones/TimeZoneMaps.php", 
+            ];
+
+            array_push($seeds, $files);
+        }
         
 
         if( env('UTILS_PERMISSION_ENABLE') === TRUE ) 
-            array_push($seeds, self::getFiles("$seeds_path/Permission"));
+        {
+            $files = [
+                "$seeds_path/Permission/Permissions.php",
+                "$seeds_path/Permission/PermissionItems.php",
+                "$seeds_path/Permission/PermissionMaps.php",
+            ];
 
+            array_push($seeds, $files);
+        }
+
+        if( env('UTILS_AUTHENTICATION_ENABLE') === TRUE ) 
+        {
+            $files = [
+                "$seeds_path/Authentication/Users.php",
+            ];
+
+            array_push($seeds, $files);
+        }
 
         return Arrays::Flatten($seeds);
     }

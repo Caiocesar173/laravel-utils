@@ -16,11 +16,11 @@ class CreatePermissionMapTable extends Migration
         Schema::create('permission_map', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->uuid('permission_id');			
-			$table->foreign('permission_id')->references('id')->on('permission')->onDelete('cascade');
+            $table->string('responsable_type', 255);
+            $table->char('responsable_id', 36);
 
-            $table->uuid('permission_item_id');			
-			$table->foreign('permission_item_id')->references('id')->on('permission_item')->onDelete('cascade');
+            $table->string('permission_type', 255);
+            $table->char('permission_id', 36);
 
             $table->timestamps();
         });

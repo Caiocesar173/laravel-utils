@@ -6,7 +6,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 use Caiocesar173\Utils\Entities\Statuses;
 use Caiocesar173\Utils\Repositories\StatusesRepository;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 
 /**
@@ -14,7 +14,7 @@ use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class StatusesRepositoryEloquent extends CustomBaseRepository implements StatusesRepository
+class StatusesRepositoryEloquent extends RepositoryAbstract implements StatusesRepository
 {
     /**
      * Specify Model class name

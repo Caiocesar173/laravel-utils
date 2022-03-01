@@ -2,28 +2,21 @@
 
 namespace Caiocesar173\Utils\Entities;
 
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 
-class PermissionMap extends CustomModel 
+class PermissionMap extends ModelAbstract 
 {
     protected $table = 'permission_map';
     protected $primaryKey = 'id';
     
     protected $fillable = [
+        'responsable_id',
+        'responsable_type',
+
         'permission_id',
-        'permission_item_id'
+        'permission_type',
     ];
 
-
-    public static function rules($id = null, $merge = [])
-    {
-        //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ",$id" : ''),
-
-        return array_merge(
-            [],
-            $merge
-        );
-    }
 }
 

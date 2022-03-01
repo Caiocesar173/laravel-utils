@@ -6,7 +6,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 use Caiocesar173\Utils\Entities\Currency;
 use Caiocesar173\Utils\Repositories\CurrencyRepository;
-use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
+use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 
 /**
@@ -14,7 +14,7 @@ use Caiocesar173\Utils\Repositories\Eloquent\CustomBaseRepository;
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class CurrencyRepositoryEloquent extends CustomBaseRepository implements CurrencyRepository
+class CurrencyRepositoryEloquent extends RepositoryAbstract implements CurrencyRepository
 {
     /**
      * Specify Model class name

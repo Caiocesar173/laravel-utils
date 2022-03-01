@@ -16,7 +16,6 @@ define('DefaultError', ApiReturn::ErrorMessage());
 define('DefaultSuccess', ApiReturn::SuccessMessage());
 
 
-
 class ApiReturn
 {
 	const DefaultError = DefaultError;
@@ -31,23 +30,33 @@ class ApiReturn
 		return self::ErrorMessage($error, $code, $status);
 	}
 
-	public static function ErrorMessage($message = 'Ops, algo deu errado...', $code = 409, $status = false){
-		return Response::json([
-			'error' => [
-				'status' => $status,
-				'description' => $message
-			]
-		], $code);
-	}
-
-	public static function SuccessMessage($message = 'Successo', $code = 200, $data = [], $redirect = null, $status = true){
-		$response = [
+	public static function ErrorMessage($message = 'Ops, algo deu errado...', $code = 409, $status = false)
+	{
+		$data = [
 			'status' => $status,
-			'description' => $message	
+			'description' => $message
 		];
 
+		return self::KeyMessage($message, $code, $data, 'error', null, $status);
+	}
+
+	public static function SuccessMessage($message = 'Successo', $code = 200, $data = [], $redirect = null, $status = true)
+	{
+		return self::KeyMessage($message, $code, $data, 'data', $redirect, $status);
+	}
+
+	public static function KeyMessage($message = 'Successo', $code = 200, $data = [], $keyName = 'data', $redirect = null, $status = true)
+	{
+		$response = [];
+		
+		if($code >= 200 && $code <= 300)
+			$response = [
+				'status' => $status,
+				'description' => $message	
+			];
+
 		if(!empty($data))
-			$response['data'] = $data;
+			$response[$keyName] = $data;
 
 		if(!is_null($redirect))
 		{
@@ -62,5 +71,10 @@ class ApiReturn
 		}
 
 		return  Response::json($response, $code);
+	}
+
+	public static function Stream($callback, $headers, $code = 200)
+	{
+		return Response::stream($callback, $code, $headers);
 	}
 }

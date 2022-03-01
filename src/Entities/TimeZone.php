@@ -2,10 +2,10 @@
 
 namespace Caiocesar173\Utils\Entities;
 
-use Caiocesar173\Utils\Http\Model\CustomModel;
+use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 
-class TimeZone extends CustomModel
+class TimeZone extends ModelAbstract
 {
     protected $table = 'time_zone';
     protected $primaryKey = 'id';
@@ -17,14 +17,4 @@ class TimeZone extends CustomModel
         'name',
         'tz_name',
     ];
-   
-    public static function rules($id = null, $merge = [])
-    {
-        //'field'  => 'required|min:11|max:14|unique:table,field' . ($id ? ',$id' : ''),
-
-        return array_merge(
-            [],
-            $merge
-        );
-    }
 }
