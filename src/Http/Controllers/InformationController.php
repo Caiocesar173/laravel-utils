@@ -3,25 +3,25 @@
 namespace Caiocesar173\Utils\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Caiocesar173\Utils\Classes\ApiReturn;
+use Caiocesar173\Utils\Abstracts\ServiceAbstract;
+use Caiocesar173\Utils\Abstracts\ApiControllerAbstract;
+use Caiocesar173\Utils\Services\AuthService;
 
 
-class InformationController extends Controller
+class InformationController extends ApiControllerAbstract
 {
+    protected function getService(): ServiceAbstract
+    {
+        return app(AuthService::class);
+    }
+
     public function information(Request $request)
     {   
-        $user = auth()->user();
-        
-        $response = [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'img' => $user->avatar,
-            'role' => 0,
-            'date' => null
-        ];
+        return $this->getService()->information();
+    }
 
-        return ApiReturn::SuccessMessage('Informações', 200, $response);
+    public function permission(Request $request)
+    {   
+        return $this->getService()->permission();
     }
 }

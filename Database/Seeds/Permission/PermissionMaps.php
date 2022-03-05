@@ -135,8 +135,26 @@ class PermissionMaps extends Seeder
             [ 'Sistema'               ,'auth.information'   ],
             [ 'Gerente de contratos'  ,'auth.information'   ],
             [ 'Gerente de canais'     ,'auth.information'   ],
-            
 
+            [ 'Teste'                 ,'auth.permission'    ],
+            [ 'Administrador'         ,'auth.permission'    ],
+            [ 'Presidência'           ,'auth.permission'    ],
+            [ 'Desenvolvedor'         ,'auth.permission'    ],
+            [ 'Logística'             ,'auth.permission'    ],
+            [ 'Faturamento'           ,'auth.permission'    ],
+            [ 'Gerente de Contas'     ,'auth.permission'    ],
+            [ 'Financeiro'            ,'auth.permission'    ],
+            [ 'Cliente'               ,'auth.permission'    ],
+            [ 'Suporte'               ,'auth.permission'    ],
+            [ 'Controle de Qualidade' ,'auth.permission'    ],
+            [ 'Gerente operacional'   ,'auth.permission'    ],
+            [ 'Gerente comercial'     ,'auth.permission'    ],
+            [ 'Desenvolvedor'         ,'auth.permission'    ],
+            [ 'DBA'                   ,'auth.permission'    ],
+            [ 'Sistema'               ,'auth.permission'    ],
+            [ 'Gerente de contratos'  ,'auth.permission'    ],
+            [ 'Gerente de canais'     ,'auth.permission'    ],
+            
             //Permission Group
             [ 'Administrador' ,"permission.group"         ],
             [ 'Administrador' ,"permission.group.show"    ],
