@@ -14,11 +14,16 @@ class CreateAuditsTable extends Migration
     public function up()
     {
         Schema::create('audits', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('user_type')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->uuid('id')->primary();
+            
+            $table->string('user_id',36)->nullable();
+            $table->string('user_type',100)->nullable();
+            
             $table->string('event');
-            $table->morphs('auditable');
+            
+            $table->string('auditable_id',36);
+            $table->string('auditable_type',100);
+
             $table->text('old_values')->nullable();
             $table->text('new_values')->nullable();
             $table->text('url')->nullable();

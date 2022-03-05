@@ -2,13 +2,11 @@
 
 namespace Caiocesar173\Utils\Database\Seeds;
 
-use Caiocesar173\Utils\Entities\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Caiocesar173\Utils\Entities\PermissionItem;
-use Caiocesar173\Utils\Entities\PermissionMap;
-use Caiocesar173\Utils\Repositories\PermissionMapRepository;
+use Caiocesar173\Utils\Repositories\PermissionRepository;
 use Caiocesar173\Utils\Services\PermissionMapService;
 
 class PermissionMaps extends Seeder
@@ -188,12 +186,12 @@ class PermissionMaps extends Seeder
         foreach ($permisson_map as $map) 
         {
             $permissionName = $map[0];
-            $group = Permission::where('name', $permissionName)->first();
+            $group = app(PermissionRepository::class)->where('name', $permissionName)->first();
             if(is_null($group))
                 throw new \Exception("unable to find permission: $permissionName", 1);
 
             $permissionItemCode = $map[1];
-            $item = PermissionItem::where('code', $permissionItemCode)->first();
+            $item = app(PermissionItem::class)->where('code', $permissionItemCode)->first();
             if(is_null($item))
                 throw new \Exception("unable to find Permission Item: $permissionItemCode", 1);
 

@@ -5,10 +5,9 @@ namespace Caiocesar173\Utils\Database\Seeds;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Caiocesar173\Utils\Entities\PermissionItem;
-use Caiocesar173\Utils\Entities\Statuses;
 use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
 use Caiocesar173\Utils\Enum\StatusEnum;
+use Caiocesar173\Utils\Repositories\PermissionItemRepository;
 
 class PermissionItems extends Seeder
 {
@@ -261,7 +260,7 @@ class PermissionItems extends Seeder
         DB::table('permission_item')->truncate();
         foreach ($items as $item) 
         {
-            PermissionItem::create($item);
+            app(PermissionItemRepository::class)->create($item);
             echo ("Inserted Permission Item: {$item['name']} [" . array_search($item, $items) . "]\n");
             $this->command->info('Inserted permission item from' . $item['name'] . ' [' . count($item) . ']..');
         }

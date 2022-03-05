@@ -9,11 +9,12 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Caiocesar173\Utils\Exceptions\NotFoundException;
 use Caiocesar173\Utils\Traits\RepositoryServiceProviderTrait;
 
-use Caiocesar173\Utils\Http\Middleware\LogMiddleware;
 use Caiocesar173\Utils\Http\Middleware\AuthApiMiddleware;
 use Caiocesar173\Utils\Http\Middleware\SetUserApiMiddleware;
 use Caiocesar173\Utils\Http\Middleware\AccessControlMiddleware;
+use Caiocesar173\Utils\Http\Middleware\RequestLogMiddleware;
 use Illuminate\Support\ServiceProvider;
+
 
 class UtilsServiceProvider extends ServiceProvider
 {
@@ -28,7 +29,10 @@ class UtilsServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
         
         if (env('UTILS_LOGS_ENABLE') === TRUE)
+        {
             $this->loadMigrationsFrom(__DIR__ .'/../../Database/LogMigrations');
+            app(Router::class)->aliasMiddleware('Log', RequestLogMiddleware::class);
+        }
         
         if( env('UTILS_MIGRATIONS_ENABLE') === TRUE ) 
             $this->loadMigrationsFrom(__DIR__ .'/../../Database/Migrations');
@@ -49,9 +53,6 @@ class UtilsServiceProvider extends ServiceProvider
         $this->app->singleton(ExceptionHandler::class, NotFoundException::class);
         $this->app->singleton(ExceptionHandler::class, ApiException::class);
 
-        if( env('UTILS_LOGS_ENABLE') === TRUE ) 
-            app(Router::class)->aliasMiddleware('Log', LogMiddleware::class);
-
         if( env('UTILS_AUTHENTICATION_ENABLE') === TRUE ) 
         {
             $this->app->register(\Tymon\JWTAuth\Providers\LaravelServiceProvider::class);
@@ -66,6 +67,7 @@ class UtilsServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->registerRepository('src', __DIR__ .'/../Repositories');
         $this->registerLocalRepository('src', __DIR__ .'/../Repositories');
     }
 }
