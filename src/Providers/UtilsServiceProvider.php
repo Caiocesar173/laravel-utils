@@ -67,7 +67,6 @@ class UtilsServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->registerRepository('src', __DIR__ .'/../Repositories');
-        $this->registerLocalRepository('src', __DIR__ .'/../Repositories');
+        $this->registerLocalRepository(__DIR__ .'/../Repositories');
     }
 }

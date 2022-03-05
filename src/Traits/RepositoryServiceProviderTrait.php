@@ -21,7 +21,7 @@ trait RepositoryServiceProviderTrait
         }
     }
 
-    protected function registerLocalRepository($path, $pathInterfaces)
+    protected function registerLocalRepository($pathInterfaces)
     {
         $repositories = glob( "$pathInterfaces/*php" );
         $eloquents = glob( "{$pathInterfaces}/Eloquent/*php" );

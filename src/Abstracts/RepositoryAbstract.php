@@ -29,6 +29,7 @@ abstract class RepositoryAbstract extends BaseRepository
         $model = parent::makeModel();
         $modelNew = $model->create($attributes);
 
+        /*
         foreach ($attributes as $key => $attribute) 
         {
             if(!Json::isJson($attribute))
@@ -43,6 +44,7 @@ abstract class RepositoryAbstract extends BaseRepository
 
             self::saveRelation($modelNew, $modelRelation, $strRelationMethod, $list);
         }
+        */
 
         return $modelNew;
     }
