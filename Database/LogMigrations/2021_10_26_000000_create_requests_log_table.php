@@ -18,7 +18,7 @@ class CreateRequestsLogTable extends Migration
     {
         Schema::create('requests_log', function(Blueprint $table) {
             $table->uuid('id')->primary();
-
+            
             $table->text('route')->nullable();
             $table->json('user_agent')->nullable();
             $table->text('status')->nullable();

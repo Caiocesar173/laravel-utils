@@ -22,8 +22,6 @@ class CreateRequestsValidationTable extends Migration
             $table->json('url');
             $table->json('body');
             
-            //$table->unique('url');
-            //$table->unique('body');
             $table->timestamps();
 		});
     }
