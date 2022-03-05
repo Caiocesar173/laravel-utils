@@ -13,7 +13,7 @@ use Caiocesar173\Utils\Entities\Permission;
 use Caiocesar173\Utils\Entities\PermissionItem;
 use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
 use Caiocesar173\Utils\Repositories\PermissionMapRepository;
-
+use Illuminate\Support\Fluent;
 
 /**
  * Class PermissionMapRepositoryEloquent.
@@ -100,5 +100,53 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
             ->get();
         
         return $items;
+    }
+
+    public function userItems( User $user )
+    {
+        $items = app($this->model())
+            ->where('responsable_type', get_class($user))
+            ->where('responsable_id', $user->id)
+            ->where('permission_type', get_class(app(PermissionItem::class)))
+            ->get();
+
+        return $items;
+    }
+
+    public function getUserPermissionList(User $user)
+    {
+        $permissions = [];
+
+        $userGroup = $this->getUserGroup($user);
+        if( is_string($userGroup) )
+            return [];
+
+        $groupItems = $this->groupItems($userGroup);
+        if( is_string($groupItems) )
+            return [];
+
+        $userItems = $this->userItems($user);
+        if( is_string($userItems) )
+            return [];
+        
+        $items = $userItems->toArray() + $groupItems->toArray();
+
+        if(!is_null($items))
+        {
+            foreach($items as $item)
+            {
+                $item = new Fluent($item);
+                if($item->permission_type == get_class(app(PermissionItem::class)) )
+                {
+                    $permissionItem = app(PermissionItem::class)
+                        ->where('type', PermissionItemTypeEnum::ROUTE)
+                        ->find($item->permission_id, ['code']);
+                    if(!is_null($permissionItem))
+                        array_push($permissions, $permissionItem->code);
+                }
+            }
+         
+        }
+        return $permissions;
     }
 }

@@ -73,6 +73,14 @@ class PermissionItems extends Seeder
                 'icon' => NULL,
                 'icon_type' => NULL 
             ],
+            [ 
+                'name' => "Permission for Token Permissions in the Resource Authentication",
+                'code' => "auth.permission",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
 
             //Permission Group
             [ 
