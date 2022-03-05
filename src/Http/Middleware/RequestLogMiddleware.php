@@ -31,7 +31,7 @@ class RequestLogMiddleware
         $header = $request->header();
         $body = $request->all();
         $type= $request->method();
-        $mac = exec('getmac');
+        //$mac = exec('getmac');
 
         if(empty($body))
             $body = '{}';
@@ -52,7 +52,7 @@ class RequestLogMiddleware
             'token' => $token,
             'url' => $url,
             'ip' => $ip,
-            'mac' => $mac,
+            //'mac' => $mac,
             'location' => $location,
         ];
         

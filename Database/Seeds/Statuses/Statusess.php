@@ -5,8 +5,7 @@ namespace Caiocesar173\Utils\Database\Seeds;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Caiocesar173\Utils\Entities\Statuses;
-
+use Caiocesar173\Utils\Repositories\StatusesRepository;
 
 class Statusess extends Seeder
 {
@@ -45,7 +44,8 @@ class Statusess extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('statuses')->truncate();
         foreach ($statuses as $status) {
-            Statuses::create($status);
+            app(StatusesRepository::class)->create($status);
+
             echo ("Inserted Status: {$status['name']} [" . array_search($status, $statuses) . "]\n");
             $this->command->info('Inserted status from' . $status['name'] . ' [' . count($status) . ']..');
         }
