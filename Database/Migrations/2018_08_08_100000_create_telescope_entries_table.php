@@ -41,8 +41,7 @@ class CreateTelescopeEntriesTable extends Migration
     public function up()
     {
         $this->schema->create('telescope_entries', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            
+            $table->bigIncrements('sequence');
             $table->uuid('uuid');
             $table->uuid('batch_id');
             $table->string('family_hash')->nullable()->index();
