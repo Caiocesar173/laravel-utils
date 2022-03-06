@@ -51,6 +51,19 @@ On your `.env` adjust the time of expiration for the token to 3days:
 JWT_TTL=4320
 ```
 
+
+On your `config/auth` add the gurad api and place his driver as jwt:
+
+```
+'guards' => [
+        
+    'api' => [
+        'driver' => 'jwt',
+        'provider' => 'users',
+    ],
+],
+```
+
 The Varibles accepted on your `.env`: 
 
 ```

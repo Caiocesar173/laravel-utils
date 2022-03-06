@@ -30,14 +30,14 @@ abstract class ServiceAbstract
     public function destroy($id)
     {
         $entity = $this->getRepository()->find($id);
-        $entity->status_id = StatusEnum::EXCLUDED;
+        $entity->status = StatusEnum::EXCLUDED;
         return $entity->save();
     }  
 
     public function recover($id)
     {
         $entity = $this->getRepository()->find($id);
-        $entity->status_id = StatusEnum::ACTIVE;
+        $entity->status = StatusEnum::ACTIVE;
         return $entity->save();
     }   
 }
