@@ -1,13 +1,14 @@
 <?php
 
+use Caiocesar173\Utils\Enum\StatusEnum;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateStatusesTable.
+ * Class CreateSituationTable.
  */
-class CreateStatusesTable extends Migration
+class CreateSituationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,12 +17,13 @@ class CreateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function(Blueprint $table) {
+        Schema::create('situation', function(Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name', 100)->default('Active');
             $table->tinyInteger('visible')->default(1);
             $table->tinyInteger('active')->default(1);
             $table->nullableMorphs('responsable');
+            $table->enum('status', StatusEnum::keys())->default(StatusEnum::ACTIVE);
 
             $table->timestamps();
 		});
@@ -34,6 +36,6 @@ class CreateStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('situation');
     }
 }

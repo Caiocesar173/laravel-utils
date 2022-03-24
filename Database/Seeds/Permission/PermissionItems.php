@@ -38,6 +38,62 @@ class PermissionItems extends Seeder
                 'icon' => NULL,
                 'icon_type' => NULL 
             ],
+            [ 
+                'name' => "Permission for Auditing Resources",
+                'code' => "audit",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Delete Registers",
+                'code' => "status.delete",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Accessing Deleted Registers",
+                'code' => "status.deleted.view",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Updating Deleted Registers",
+                'code' => "status.deleted.update",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission Block Registers",
+                'code' => "status.block",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Accessing Blocked Registers",
+                'code' => "status.blocked.view",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Updating Blocked Registers",
+                'code' => "status.blocked.update",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
 
             //Authentication 
             [ 

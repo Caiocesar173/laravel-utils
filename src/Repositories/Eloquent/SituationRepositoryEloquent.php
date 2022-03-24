@@ -4,17 +4,17 @@ namespace Caiocesar173\Utils\Repositories\Eloquent;
 
 use Prettus\Repository\Criteria\RequestCriteria;
 
-use Caiocesar173\Utils\Entities\Statuses;
-use Caiocesar173\Utils\Repositories\StatusesRepository;
+use Caiocesar173\Utils\Entities\Situation;
+use Caiocesar173\Utils\Repositories\SituationRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
 
 /**
- * Class StatusesRepositoryEloquent.
+ * Class SituationRepositoryEloquent.
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class StatusesRepositoryEloquent extends RepositoryAbstract implements StatusesRepository
+class SituationRepositoryEloquent extends RepositoryAbstract implements SituationRepository
 {
     /**
      * Specify Model class name
@@ -23,7 +23,7 @@ class StatusesRepositoryEloquent extends RepositoryAbstract implements StatusesR
      */
     public function model()
     {
-        return Statuses::class;
+        return Situation::class;
     }
 
     /**

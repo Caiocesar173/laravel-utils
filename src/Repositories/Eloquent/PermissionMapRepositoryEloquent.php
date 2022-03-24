@@ -13,6 +13,7 @@ use Caiocesar173\Utils\Entities\Permission;
 use Caiocesar173\Utils\Entities\PermissionItem;
 use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
 use Caiocesar173\Utils\Repositories\PermissionMapRepository;
+use Exception;
 use Illuminate\Support\Fluent;
 
 /**
@@ -40,15 +41,27 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function UserhasItem(User $user, PermissionItem $route, String $routeUrl, $type = PermissionItemTypeEnum::ROUTE)
-    {       
-       $group = $this->getUserGroup($user);
-        if(is_string($group)) 
+    public function UserhasItem(User $user, $route, String $routeUrl, $type = PermissionItemTypeEnum::ROUTE)
+    {
+        if (!$route instanceof PermissionItem){
+            if(is_string($route)){
+                $route = app(PermissionItem::class)->where('code', $route)->first();
+
+                if(is_null($route))
+                    return "Item de rota nao encontrado";
+            }
+            else
+                throw new Exception('$route must bee an instace of PermissionItem or String');
+        }
+        
+
+        $group = $this->getUserGroup($user);
+        if (is_string($group))
             return $group;
 
-        if($group instanceof Permission)
+        if ($group instanceof Permission)
             return $this->hasItem($route, $group, $type);
-       
+
         return "O usuario não tem permissão à rota '{$routeUrl}'.";
     }
 
@@ -58,11 +71,11 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
             ->where('responsable_type', get_class($user))
             ->where('responsable_id', $user->id)
             ->first();
-    
-        if(is_null($map)) 
+
+        if (is_null($map))
             return "Usuario não cadastrado em grupo de permissão valido";
 
-        if($map->permission_type == get_class(app(Permission::class)) )
+        if ($map->permission_type == get_class(app(Permission::class)))
             return app(Permission::class)->find($map->permission_id);
 
         return "Não foi possivel localizar um grupo de permissões para o Usuario";
@@ -76,7 +89,7 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
             ->where('permission_type', get_class($group))
             ->where('permission_id', $group->id)
             ->first();
-        
+
         return $map;
     }
 
@@ -88,21 +101,21 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
             ->where('permission_type', get_class($item))
             ->where('permission_id', $item->id)
             ->first();
-        
+
         return $map;
     }
 
-    public function groupItems( Permission $group )
+    public function groupItems(Permission $group)
     {
         $items = app($this->model())
             ->where('responsable_type', get_class($group))
             ->where('responsable_id', $group->id)
             ->get();
-        
+
         return $items;
     }
 
-    public function userItems( User $user )
+    public function userItems(User $user)
     {
         $items = app($this->model())
             ->where('responsable_type', get_class($user))
@@ -118,34 +131,30 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
         $permissions = [];
 
         $userGroup = $this->getUserGroup($user);
-        if( is_string($userGroup) )
+        if (is_string($userGroup))
             return [];
 
         $groupItems = $this->groupItems($userGroup);
-        if( is_string($groupItems) )
+        if (is_string($groupItems))
             return [];
 
         $userItems = $this->userItems($user);
-        if( is_string($userItems) )
+        if (is_string($userItems))
             return [];
-        
+
         $items = $userItems->toArray() + $groupItems->toArray();
 
-        if(!is_null($items))
-        {
-            foreach($items as $item)
-            {
+        if (!is_null($items)) {
+            foreach ($items as $item) {
                 $item = new Fluent($item);
-                if($item->permission_type == get_class(app(PermissionItem::class)) )
-                {
+                if ($item->permission_type == get_class(app(PermissionItem::class))) {
                     $permissionItem = app(PermissionItem::class)
                         ->where('type', PermissionItemTypeEnum::ROUTE)
                         ->find($item->permission_id, ['code']);
-                    if(!is_null($permissionItem))
+                    if (!is_null($permissionItem))
                         array_push($permissions, $permissionItem->code);
                 }
             }
-         
         }
         return $permissions;
     }

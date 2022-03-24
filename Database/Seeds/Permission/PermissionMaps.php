@@ -153,6 +153,43 @@ class PermissionMaps extends Seeder
             [ 'Gerente de contratos'  ,'auth.permission'    ],
             [ 'Gerente de canais'     ,'auth.permission'    ],
             
+            //Statuses
+            [ 'Administrador'      ,"status.delete"         ],
+            [ 'Presidência'        ,"status.delete"         ],
+            [ 'Teste'              ,"status.delete"         ],
+            [ 'Desenvolvedor'      ,"status.delete"         ],
+            [ 'Sistema'            ,"status.delete"         ],
+
+            [ 'Administrador'      ,"status.deleted.view"   ],
+            [ 'Presidência'        ,"status.deleted.view"   ],
+            [ 'Teste'              ,"status.deleted.view"   ],
+            [ 'Desenvolvedor'      ,"status.deleted.view"   ],
+            [ 'Sistema'            ,"status.deleted.view"   ],
+
+            [ 'Administrador'      ,"status.deleted.update" ],
+            [ 'Presidência'        ,"status.deleted.update" ],
+            [ 'Teste'              ,"status.deleted.update" ],
+            [ 'Desenvolvedor'      ,"status.deleted.update" ],
+            [ 'Sistema'            ,"status.deleted.update" ],
+
+            [ 'Administrador'      ,"status.block"          ],
+            [ 'Presidência'        ,"status.block"          ],
+            [ 'Teste'              ,"status.block"          ],
+            [ 'Desenvolvedor'      ,"status.block"          ],
+            [ 'Sistema'            ,"status.block"          ],
+
+            [ 'Administrador'      ,"status.blocked.view"   ],
+            [ 'Presidência'        ,"status.blocked.view"   ],
+            [ 'Teste'              ,"status.blocked.view"   ],
+            [ 'Desenvolvedor'      ,"status.blocked.view"   ],
+            [ 'Sistema'            ,"status.blocked.view"   ],
+
+            [ 'Administrador'      ,"status.blocked.update" ],
+            [ 'Presidência'        ,"status.blocked.update" ],
+            [ 'Teste'              ,"status.blocked.update" ],
+            [ 'Desenvolvedor'      ,"status.blocked.update" ],
+            [ 'Sistema'            ,"status.blocked.update" ],
+
             //Permission Group
             [ 'Administrador' ,"permission.group"         ],
             [ 'Administrador' ,"permission.group.show"    ],
