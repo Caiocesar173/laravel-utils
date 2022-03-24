@@ -1,6 +1,11 @@
 # laravel-utils
-Simple package of Laravel utilitaries 
+Package of Laravel utilitaries 
 
+Remember to implement [`owenit-auditing`](https://github.com/owen-it/laravel-auditing): 
+
+```
+php artisan vendor:publish --provider "OwenIt\Auditing\AuditingServiceProvider" --tag="config"
+```
 
 When enableling the authentication method remember to implement [`jwt-auth`](https://jwt-auth.readthedocs.io/en/develop/): 
 
