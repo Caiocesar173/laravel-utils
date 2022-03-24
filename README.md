@@ -48,7 +48,7 @@ Then below your `class User` implement the following:
 On your `.env` adjust the time of expiration for the token to 3days:
 
 ```
-    JWT_TTL=4320
+JWT_TTL=4320
 ```
 
 
