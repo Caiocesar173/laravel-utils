@@ -14,11 +14,11 @@ abstract class WebControllerAbstract extends Controller
 {
     protected static function PluckRepository(RepositoryAbstract $repository)
     {
-        $id = request()->get('i', 'id');
-        $query = request()->get('q', '');
-        $filter = request()->get('f', null);
-        $colum = request()->get('c', '');
-        $operator = request()->get('o', 'like');
+        $id = request()->get('identifier', 'id');
+        $query = request()->get('query', '');
+        $filter = request()->get('filter', null);
+        $colum = request()->get('colum', '');
+        $operator = request()->get('operator', 'like');
 
         $array = $repository->pluck($colum, $query, $filter, $operator, $id)->toArray();
 

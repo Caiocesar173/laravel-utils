@@ -5,11 +5,11 @@ namespace Caiocesar173\Utils\Repositories;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface StatusesRepository.
+ * Interface SituationRepository.
  *
  * @package namespace Caiocesar173\Utils\Repositories;
  */
-interface StatusesRepository extends RepositoryInterface
+interface SituationRepository extends RepositoryInterface
 {
     //
 }

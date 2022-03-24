@@ -71,7 +71,7 @@ The Varibles accepted on your `.env`:
     UTILS_AUTHENTICATION_ENABLE = TRUE #Enables the JWT authentication
     UTILS_PERMISSION_ENABLE = TRUE #Uses the JWT Setup and permissions for generating and  validate permissions
 
-    UTILS_STATUSES_ENABLE = TRUE #Basic statuses for all the controllers.
+    UTILS_STUATION_ENABLE = TRUE #Basic statuses for all the controllers.
     UTILS_BUSINESSUNIT_ENABLE = TRUE
     UTILS_GEOLOC_ENABLE = TRUE #GeoLoc: locatins, coins, language and internet and phone zones
     UTILS_LOGS_ENABLE = TRUE #Logs | Autdit for all routes. See what comes in an out

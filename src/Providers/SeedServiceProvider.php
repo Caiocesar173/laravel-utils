@@ -155,10 +155,10 @@ class SeedServiceProvider extends ServiceProvider
         $seeds = [];
         $seeds_path = $this->seeds_path;
 
-        if( env('UTILS_STATUSES_ENABLE') === TRUE ) 
+        if( env('UTILS_STUATION_ENABLE') === TRUE ) 
         {
             $files = [
-                "$seeds_path/Statuses/Statusess.php",
+                "$seeds_path/Situation/Situations.php",
             ];
 
             array_push($seeds, $files);

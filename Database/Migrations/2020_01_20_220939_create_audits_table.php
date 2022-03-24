@@ -24,8 +24,8 @@ class CreateAuditsTable extends Migration
             $table->string('auditable_id',36);
             $table->string('auditable_type',100);
 
-            $table->text('old_values')->nullable();
-            $table->text('new_values')->nullable();
+            $table->json('old_values')->nullable();
+            $table->json('new_values')->nullable();
             $table->text('url')->nullable();
             $table->ipAddress('ip_address')->nullable();
             $table->string('user_agent', 1023)->nullable();

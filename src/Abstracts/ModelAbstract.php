@@ -13,10 +13,12 @@ use CaioCesar173\Utils\Enum\StatusEnum;
 use Caiocesar173\Utils\Traits\UuidKeyTrait;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
+use OwenIt\Auditing\Auditable;
+use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
-abstract class ModelAbstract extends Model implements Transformable
+abstract class ModelAbstract extends Model implements Transformable, AuditableContract
 {
-    use TransformableTrait, UuidKeyTrait, HasFactory;
+    use TransformableTrait, UuidKeyTrait, HasFactory, Auditable;
 
     protected $auditHide = [];
     protected $auditTranslate = [];

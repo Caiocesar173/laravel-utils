@@ -26,12 +26,9 @@ class AccessControlMiddleware
         {
             $routeName = Route::getCurrentRoute()->getName();
             $routeUrl = $request->getUri();
-            $route = app(PermissionItem::class)->where('code', $routeName)->first();
-            if( is_null($route) )
-                return ApiReturn::ErrorMessage("Item de rota não encontrado, cadastre-o e tente novamente", 404);
-
+       
             $hasPermission = app(PermissionMapRepository::class)
-                ->UserhasItem(auth()->user(), $route, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
+                ->UserhasItem(auth()->user(), $routeName, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
                 
             if( is_string($hasPermission) )
                 return ApiReturn::ErrorMessage($hasPermission, 403);

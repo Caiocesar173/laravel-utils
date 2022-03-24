@@ -2,10 +2,13 @@
 
 namespace Caiocesar173\Utils\Providers;
 
-use Caiocesar173\Utils\Exceptions\ApiException;
 use Illuminate\Routing\Router;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
+use OwenIt\Auditing\AuditingServiceProvider;
+
+use Caiocesar173\Utils\Exceptions\ApiException;
 use Caiocesar173\Utils\Exceptions\NotFoundException;
 use Caiocesar173\Utils\Traits\RepositoryServiceProviderTrait;
 
@@ -13,8 +16,6 @@ use Caiocesar173\Utils\Http\Middleware\AuthApiMiddleware;
 use Caiocesar173\Utils\Http\Middleware\SetUserApiMiddleware;
 use Caiocesar173\Utils\Http\Middleware\AccessControlMiddleware;
 use Caiocesar173\Utils\Http\Middleware\RequestLogMiddleware;
-use Illuminate\Support\ServiceProvider;
-
 
 class UtilsServiceProvider extends ServiceProvider
 {
@@ -50,6 +51,7 @@ class UtilsServiceProvider extends ServiceProvider
         }
 
         $this->app->register(SeedServiceProvider::class);
+        $this->app->register(AuditingServiceProvider::class);
         $this->app->singleton(ExceptionHandler::class, NotFoundException::class);
         $this->app->singleton(ExceptionHandler::class, ApiException::class);
 

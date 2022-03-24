@@ -1,7 +1,6 @@
 <?php
 namespace Caiocesar173\Utils\Abstracts;
 
-use Caiocesar173\Utils\Classes\Json;
 use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 use Prettus\Repository\Eloquent\BaseRepository;
