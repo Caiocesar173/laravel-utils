@@ -18,7 +18,9 @@ class AlterUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function(Blueprint $table) {
-			$table->enum('status', StatusEnum::lists() )
+			$table->json('username')->nullable()->after('id');
+			$table->json('avatar')->nullable()->after('id');
+            $table->enum('status', StatusEnum::lists() )
                 ->default(StatusEnum::ACTIVE)
                 ->after('id');
         });
@@ -32,6 +34,8 @@ class AlterUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function(Blueprint $table){
+            $table->dropColumn('username');
+            $table->dropColumn('avatar');
             $table->dropColumn('status');
         });
     }

@@ -17,7 +17,7 @@ class InformationController extends ApiControllerAbstract
 
     public function information(Request $request)
     {   
-        return $this->getService()->information();
+        return $this->getService()->information($request->user());
     }
 
     public function permission(Request $request)

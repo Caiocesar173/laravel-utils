@@ -17,10 +17,10 @@ abstract class StatusEnum extends CustomEnum
 
     public static function lists() {
         return [
-            self::ACTIVE   => 'Active',
-            self::INACTIVE => 'Inactive',
-            self::BLOCKED  => 'Blocked',
-            self::EXCLUDED => 'Excluded'
+            self::ACTIVE   => 'active',
+            self::INACTIVE => 'inactive',
+            self::BLOCKED  => 'blocked',
+            self::EXCLUDED => 'excluded'
         ];
     }
 }

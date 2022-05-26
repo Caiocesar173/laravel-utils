@@ -2,6 +2,7 @@
 
 namespace Caiocesar173\Utils\Services;
 
+use App\Models\User;
 use Caiocesar173\Utils\Classes\ApiReturn;
 use Caiocesar173\Utils\Abstracts\ServiceAbstract;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
@@ -22,17 +23,13 @@ class AuthService extends ServiceAbstract
         return app(AuthRequest::class);
     }
 
-    public function information()
+    public function information(User $user)
     {   
-        $user = auth()->user();
-        
         $response = [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'img' => $user->avatar,
-            'role' => 0,
-            'date' => null
         ];
 
         return ApiReturn::SuccessMessage('Informações', 200, $response);
