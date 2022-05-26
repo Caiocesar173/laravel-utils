@@ -13,7 +13,49 @@ class AuthRequest extends FormRequestAbstract
      */
     public function rules()
     {
-        return [
-        ];
+        switch ($this->method()) {
+            case 'GET':
+                return $this->getRules();
+
+            case 'POST':
+                return $this->postRules();
+
+            case 'PUT':
+                return $this->putRules();
+
+            case 'DELETE':
+                return $this->deleteRules();
+
+            default:
+                return $this->postRules();
+        }
+    }
+
+    protected function getRules()
+    {
+        $rules = [];
+
+        return $rules;
+    }
+
+    protected function postRules()
+    {
+        $rules = [];
+
+        return $rules;
+    }
+
+    protected function putRules()
+    {
+        $rules = [];
+
+        return $rules;
+    }
+
+    protected function deleteRules()
+    {
+        $rules = [];
+
+        return $rules;
     }
 }

@@ -3,13 +3,10 @@
 namespace Caiocesar173\Utils\Http\Middleware;
 
 use Closure;
-
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
-
 use Caiocesar173\Utils\Classes\Network;
 use Caiocesar173\Utils\Repositories\RequestLogRepository;
-
 
 class RequestLogMiddleware
 {
@@ -31,7 +28,6 @@ class RequestLogMiddleware
         $header = $request->header();
         $body = $request->all();
         $type= $request->method();
-        //$mac = exec('getmac');
 
         if(empty($body))
             $body = '{}';
@@ -39,7 +35,8 @@ class RequestLogMiddleware
         if(empty($body))
             $response = '{}';
 
-        $location = json_encode(Location::get($ip));
+        //IP validation adds another request that makes the api 1.5s more slow
+        //$location = json_encode(Location::get($ip));
 
         $data = [
             'route' => $route,
@@ -53,7 +50,7 @@ class RequestLogMiddleware
             'url' => $url,
             'ip' => $ip,
             //'mac' => $mac,
-            'location' => $location,
+            //'location' => $location,
         ];
         
         $log = app(RequestLogRepository::class)->create($data);

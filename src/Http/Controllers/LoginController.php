@@ -4,9 +4,9 @@ namespace Caiocesar173\Utils\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Providers\RouteServiceProvider;
 
 use Caiocesar173\Utils\Classes\ApiReturn;
@@ -38,7 +38,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    //protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -53,13 +53,17 @@ class LoginController extends Controller
     /**
      * Attempt to log the user into the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Requeswt  $request
      * @return bool
      */
     protected function attemptLogin(Request $request)
     {   
-        $this->token = JWTAuth::attempt($this->credentials($request));
+        $this->token = Auth::attempt($this->credentials($request));
 
+        if(!$this->token)
+            return ApiReturn::ErrorMessage("Credenciais Inválidas", 401);
+
+        $this->token = $this->guard()->user()->createToken('Laravel Password Grant Client')->accessToken;
         return $this->token;
     }
 
@@ -75,7 +79,10 @@ class LoginController extends Controller
 
         if ($response = $this->authenticated($request, $this->guard()->user()))
             return $response;
-        
+
+        if(!$this->token)
+            return ApiReturn::ErrorMessage("Credenciais Inválidas", 401);
+
         return ApiReturn::KeyMessage( 'Bearer', 200, $this->token, 'token');
     }
 
@@ -114,11 +121,16 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
     }
-    
+
     public function logout(Request $request)
     {
-        auth()->logout();
-        JWTAuth::parseToken()->invalidate( $request->bearerToken() );
+        $token = $request->user()->token();
+        $token->revoke();
         return ApiReturn::SuccessMessage('Usuario deslogado com sucesso');
+    }
+
+    public function unauthorized(Request $request)
+    {
+        return ApiReturn::ErrorMessage("Credenciais Inválidas", 401);
     }
 }

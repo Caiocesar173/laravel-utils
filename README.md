@@ -7,65 +7,59 @@ Remember to implement [`owenit-auditing`](https://github.com/owen-it/laravel-aud
 php artisan vendor:publish --provider "OwenIt\Auditing\AuditingServiceProvider" --tag="config"
 ```
 
-When enableling the authentication method remember to implement [`jwt-auth`](https://jwt-auth.readthedocs.io/en/develop/): 
+When enableling the authentication method remember to implement [`laravel-passport`](https://laravel.com/docs/passport):
 
 ```
-php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"  
+php artisan passport:install
 ```
 
-```
-php artisan jwt:secret
-```
-
-On `App\Modules\User.php` implement from JWTSubject:
+On `App\Modules\User.php` add HasApiTokens trait:
 
 ```
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Laravel\Passport\HasApiTokens;
 
 
-class User extends Authenticatable implements JWTSubject 
-```
-
-Then below your `class User` implement the following: 
-```
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-```
-
-
-On your `.env` adjust the time of expiration for the token to 3days:
+class User extends Authenticatable
+{
+    use HasApiTokens;
 
 ```
-    JWT_TTL=4320
+
+On `App\Modules\User.php` add to $fillable:
+
+```
+/**
+ * The attributes that are mass assignable.
+ *
+ * @var string[]
+ */
+protected $fillable = [
+    ...
+    'username',
+    'avatar',
+    'status',
+];
 ```
 
-
-On your `config/auth` add the gurad api and place his driver as jwt:
+On your `config/auth` add the gurad api and place his driver as passport:
 
 ```
 'guards' => [
-        
+    ...
     'api' => [
-        'driver' => 'jwt',
+        'driver' => 'passport',
         'provider' => 'users',
     ],
+],
+```
+
+On your `config/services` add the provider api and place his driver as passport:
+
+```
+'provider_name' => [
+    client_id => env(PROVIDER_NAME_CLIENT_ID),
+    client_secret => env(PROVIDER_NAME_CLIENT_SECRET),
+    redirect => env(PROVIDER_NAME_URL_CALLBACK),
 ],
 ```
 
@@ -73,8 +67,8 @@ The Varibles accepted on your `.env`:
 
 ```
     #Bolth the AUTHENTICATION and PERMISSION need to bee enable to work
-    UTILS_AUTHENTICATION_ENABLE = TRUE #Enables the JWT authentication
-    UTILS_PERMISSION_ENABLE = TRUE #Uses the JWT Setup and permissions for generating and  validate permissions
+    UTILS_AUTHENTICATION_ENABLE = TRUE #Enables the passport authentication
+    UTILS_PERMISSION_ENABLE = TRUE #Uses the passport Setup and permissions for generating and  validate permissions
 
     UTILS_STUATION_ENABLE = TRUE #Basic statuses for all the controllers.
     UTILS_BUSINESSUNIT_ENABLE = TRUE
