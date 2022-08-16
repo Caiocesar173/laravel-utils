@@ -8,7 +8,6 @@ use Caiocesar173\Utils\Entities\RequestLog;
 use Caiocesar173\Utils\Repositories\RequestLogRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 
-
 /**
  * Class RequestLogRepositoryEloquent.
  *

@@ -17,7 +17,6 @@ class CreatePermissionTable extends Migration
         Schema::create('permission', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name', 220);
-			$table->string('code', 220)->nullable();
 			$table->string('icon', 220)->nullable();
 			$table->string('icon_type', 220)->nullable();
             

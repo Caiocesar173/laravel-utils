@@ -2,19 +2,16 @@
 
 namespace Caiocesar173\Utils\Providers;
 
+use Caiocesar173\Utils\Exceptions\Handlers\AuthenticationExceptions;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 
 use Laravel\Passport\Passport;
 use OwenIt\Auditing\AuditingServiceProvider;
 
-use Caiocesar173\Utils\Exceptions\ApiException;
-use Caiocesar173\Utils\Exceptions\NotFoundException;
-use Caiocesar173\Utils\Traits\RepositoryServiceProviderTrait;
-
 use Caiocesar173\Utils\Http\Middleware\AccessControlMiddleware;
 use Caiocesar173\Utils\Http\Middleware\RequestLogMiddleware;
+use Caiocesar173\Utils\Traits\RepositoryServiceProviderTrait;
 
 class UtilsServiceProvider extends ServiceProvider
 {
@@ -49,8 +46,7 @@ class UtilsServiceProvider extends ServiceProvider
 
         $this->app->register(SeedServiceProvider::class);
         $this->app->register(AuditingServiceProvider::class);
-        $this->app->singleton(ExceptionHandler::class, NotFoundException::class);
-        $this->app->singleton(ExceptionHandler::class, ApiException::class);
+        $this->app->singleton(AuthenticationExceptions::class);
 
         if (env('UTILS_AUTHENTICATION_ENABLE') === TRUE) {
             Passport::routes();
@@ -61,5 +57,11 @@ class UtilsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerLocalRepository(__DIR__ . '/../Repositories');
+
+        $this->app->singleton(
+            Illuminate\Contracts\Debug\ExceptionHandler::class,
+            Caiocesar173\Utils\Exceptions\NotFoundException::class,
+            AuthenticationExceptions::class
+        );
     }
 }
