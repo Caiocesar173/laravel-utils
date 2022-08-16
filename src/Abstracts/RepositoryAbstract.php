@@ -1,111 +1,163 @@
 <?php
+
 namespace Caiocesar173\Utils\Abstracts;
 
-use Caiocesar173\Utils\Abstracts\ModelAbstract;
+use Caiocesar173\Utils\Enum\StatusEnum;
+use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
+use Caiocesar173\Utils\Repositories\PermissionMapRepository;
 
+use Caiocesar173\Utils\Exceptions\ApiException;
+use Caiocesar173\Utils\Exceptions\BlockedException;
+use Caiocesar173\Utils\Exceptions\InactiveException;
+use Caiocesar173\Utils\Exceptions\NotFoundException;
+use Caiocesar173\Utils\Exceptions\NotDeletableException;
+use Caiocesar173\Utils\Exceptions\NotRecoverableException;
+use Caiocesar173\Utils\Exceptions\NotInactivatableException;
+
+use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Contracts\CriteriaInterface;
+use Prettus\Repository\Exceptions\RepositoryException;
 
-
-abstract class RepositoryAbstract extends BaseRepository 
+abstract class RepositoryAbstract extends BaseRepository
 {
     protected $skipCriteria = false;
 
-    public function update(array $attributes, $id)
+    private function setActive($model)
     {
-        $model = parent::makeModel();
-
-        $attribute = self::getAttributes($model, $attributes);
-
-        if (method_exists($model, 'getValuesUpdate'))
-            $attribute = $model->getValuesUpdate($attribute, $id);
-
-        return $model->edit($attribute, $id);
+        $model->status = StatusEnum::ACTIVE;
+        return $model->save();
     }
 
     public function create(array $attributes)
     {
-        $model = parent::makeModel();
-        $modelNew = $model->create($attributes);
-
-        /*
-        foreach ($attributes as $key => $attribute) 
-        {
-            if(!Json::isJson($attribute))
-                continue;
-
-            $list               = json_decode($attribute, true);
-            $strModelRelation   = str_replace('_', ' ', $key);
-            $strRelationClasse  = str_replace(' ', '', ucwords($strModelRelation));
-            $strRelationMethod  = lcfirst($strRelationClasse);
-            $strRelationClasse  = rtrim($strRelationClasse, 's');
-            $modelRelation      = app("App\\Entities\\{$strRelationClasse}");
-
-            self::saveRelation($modelNew, $modelRelation, $strRelationMethod, $list);
-        }
-        */
-
-        return $modelNew;
+        return $this->makeModel()->create($attributes);
     }
 
-    public function pluck($colum = '', $name = null, $filter = null, $operator = '', $id = 'id')
+    //Update Functions
+    public function edit(array $attributes, Model $model)
     {
-        $colums = explode(',', $colum);
+        $this->Updatable($model);
+        return $this->makeModel()->edit($attributes, $model);
+    }
 
-        $model = parent::makeModel();
-        $table = $model->getTable();
+    public function Updatable(Model $model): bool
+    {
+        $permissionRepository = app(PermissionMapRepository::class);
 
-        if( $id == '')
-            $$id = 'id';
+        if ($model->isBlocked) {
+            if ($permissionRepository->UserhasItem(auth()->user(), 'status.blocked.update', 'item', '', PermissionItemTypeEnum::ITEM))
+                return true;
+            else
+                throw new BlockedException($model->id, $model->entityName);
+        }
 
-        $query = $model->orderBy($colums[0], 'asc');
+        if ($model->isInactive) {
+            if ($permissionRepository->UserhasItem(auth()->user(), 'status.inactivated.update', 'item', '', PermissionItemTypeEnum::ITEM))
+                return true;
+            else
+                throw new InactiveException($model->id, $model->entityName);
+        }
 
-        if (!is_null($name)) :
+        return true;
+    }
 
-            switch ($operator) {
-                case 'in':
-                    $query->whereIn("{$table}.{$filter}", explode("," , $name));
-                    break;
-                
-                default:
+    //Delete Functions
+    public function exclude(Model $model)
+    {
+        if ($this->Excludable($model))
+            return $this->makeModel()->exclude($model);
 
-                    $operator = $operator == 'like' ? 'like' : '=';
-                    $name = $operator == 'like' ? "%{$name}%" : $name;
-        
-                    if (!is_null($filter))
-                        $query->where("{$table}.{$filter}", $operator, $name);
-        
-                    $query->orWhere(
-                        function($query) use ($colums, $operator, $name) 
-                        {
-                            foreach ($colums as $colum) 
-                                $query->orWhere($colum, $operator, $name);
-                        }
-                    );
+        return false;
+    }
 
-                    break;
-            }
-     
-        endif;
-        $query = $this->applyCriteriModelAbstract($query);
+    public function Excludable(Model $model): bool
+    {
+        if ($model->isDestroyed)
+            throw new NotFoundException($model->id, $model->entityName);
 
-        if (count($colums) > 1)
-            return $query->pluckMultiple($id, $colums);
+        if (!$model->isDestroyed) {
+            if (app(PermissionMapRepository::class)->UserhasItem(auth()->user(), 'status.delete', 'item', '', PermissionItemTypeEnum::ITEM))
+                return true;
+            else
+                throw new NotDeletableException($model->id, $model->entityName);
+        }
 
-        return $query->pluck($colum, $id);
+        return false;
+    }
+
+    //Recover Functions
+    public function recover(Model $model)
+    {
+        if ($this->Recoverable($model))
+            return $this->setActive($model);
+
+        return false;
+    }
+
+    public function Recoverable(Model $model): bool
+    {
+        if ($model->isActive)
+            throw new ApiException("O recuso não pode ser restaurado pois o mesmo não se encontra ativo!");
+
+        if ($model->isDestroyed) {
+            if (app(PermissionMapRepository::class)->UserhasItem(auth()->user(), 'status.recover', 'item', '', PermissionItemTypeEnum::ITEM))
+                return true;
+            else
+                throw new NotRecoverableException($model->id, $model->entityName);
+        }
+
+        return false;
+    }
+
+    //Inactivate Functions
+    public function inactivate(Model $model)
+    {
+        if ($this->Inactivatable($model))
+        {
+            $model->status = StatusEnum::INACTIVE;
+            return $model->save();
+        }
+
+        return false;
+    }
+
+    public function Inactivatable(Model $model): bool
+    {
+        if ($model->isActive) {
+            if (app(PermissionMapRepository::class)->UserhasItem(auth()->user(), 'status.inactive', 'item', '', PermissionItemTypeEnum::ITEM))
+                return true;
+            else
+                throw new NotInactivatableException($model->id, $model->entityName);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Model
+     * @throws RepositoryException
+     */
+    public function makeModel()
+    {
+        $model = $this->model();
+        $model = new $model();
+
+        if (!$model instanceof Model)
+            throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+
+        return $this->model = $model;
     }
 
     protected function applyCriteriaModelAbstract($model)
     {
-        if (self::$skipCriteria === true) 
+        if (self::$skipCriteria)
             return $model;
 
         $criteria = parent::getCriteria();
 
-        if ($criteria) 
-        {
-            foreach ($criteria as $c) 
-            {
+        if ($criteria) {
+            foreach ($criteria as $c) {
                 if ($c instanceof CriteriaInterface)
                     $model = $c->apply($model, $this);
             }
@@ -114,29 +166,13 @@ abstract class RepositoryAbstract extends BaseRepository
         return $model;
     }
 
-    protected static function getAttributes(ModelAbstract $model, array $attributes): array
-    {
-        if (!empty($attributes['__validador__'])) 
-        {
-            $classe = explode('::', $attributes['__validador__'])[0];
-            $metod = explode('::', $attributes['__validador__'])[1];
-
-            unset($attributes['__validador__']);
-
-            return $attributes;
-        }
-
-        return $attributes;
-    }
-
-    protected static function saveRelation(ModelAbstract $model, ModelAbstract $relation, string $Method, array $list)
+    protected static function saveRelation(Model $model, Model $relation, string $Method, array $list)
     {
         $listProduct = [];
-        foreach ($list as $dataModelRelation) 
-        {
+        foreach ($list as $dataModelRelation) {
             if (method_exists($relation, 'getValuesUpdate'))
                 $dataModelRelation = $relation::getValuesCreate($dataModelRelation);
-            
+
             array_push($listProduct, new $relation($dataModelRelation));
         }
 

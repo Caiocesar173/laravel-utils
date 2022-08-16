@@ -13,10 +13,10 @@ class PermissionItem extends ModelAbstract
     protected $fillable = [
         'name',
         'code',
-        'status_id',
         'icon',
         'icon_type',
-        'type'
+        'type',
+        'status',
     ];
 }
 

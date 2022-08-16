@@ -4,17 +4,17 @@ namespace Caiocesar173\Utils\Repositories\Eloquent;
 
 use Prettus\Repository\Criteria\RequestCriteria;
 
-use Caiocesar173\Utils\Entities\Permission;
-use Caiocesar173\Utils\Repositories\PermissionRepository;
+use Caiocesar173\Utils\Entities\User;
+use Caiocesar173\Utils\Repositories\UserRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 use Caiocesar173\Utils\Criterias\VisibleCriteria;
 
 /**
- * Class PermissionRepositoryEloquent.
+ * Class UserRepositoryEloquent.
  *
  * @package namespace Caiocesar173\Utils\Repositories\Eloquent;
  */
-class PermissionRepositoryEloquent extends RepositoryAbstract implements PermissionRepository
+class UserRepositoryEloquent extends RepositoryAbstract implements UserRepository
 {
     /**
      * Specify Model class name
@@ -23,7 +23,7 @@ class PermissionRepositoryEloquent extends RepositoryAbstract implements Permiss
      */
     public function model()
     {
-        return Permission::class;
+        return User::class;
     }
 
     /**
@@ -31,6 +31,7 @@ class PermissionRepositoryEloquent extends RepositoryAbstract implements Permiss
      */
     public function boot()
     {
+        $this->pushCriteria(app(VisibleCriteria::class));
         $this->pushCriteria(app(RequestCriteria::class));
     }
 }

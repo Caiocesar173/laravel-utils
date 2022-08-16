@@ -7,7 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Caiocesar173\Utils\Entities\Currency;
 use Caiocesar173\Utils\Repositories\CurrencyRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
-
+use Caiocesar173\Utils\Criterias\VisibleCriteria;
 
 /**
  * Class CurrencyRepositoryEloquent.
@@ -31,6 +31,7 @@ class CurrencyRepositoryEloquent extends RepositoryAbstract implements CurrencyR
      */
     public function boot()
     {
+        $this->pushCriteria(app(VisibleCriteria::class));
         $this->pushCriteria(app(RequestCriteria::class));
     }
 }

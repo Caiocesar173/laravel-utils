@@ -22,13 +22,125 @@ class PermissionItems extends Seeder
 
         $items = [
             //General Basic Itemss
-            [ 
+            [
                 'name' => "Permission for Accessing the Resource User",
                 'code' => "user",
                 'type' => PermissionItemTypeEnum::ITEM,
                 'status' => StatusEnum::ACTIVE,
                 'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Accessing other Users",
+                'code' => "users",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [ 
+                'name' => "Permission for Token Information in the Resource Authentication",
+                'code' => "user.information",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
                 'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Token Permissions in the Resource Authentication",
+                'code' => "user.permission",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [
+                'name' => "Permission for Listing and Searching in the Resource User",
+                'code' => "user.show",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Listing, Searching and Exporting in datatable format on the Resource User",
+                'code' => "user.index",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Creating in the Resource User",
+                'code' => "user.store",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Editing in the Resource User",
+                'code' => "user.update",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Deleting in the Resource User",
+                'code' => "user.destroy",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Recovering in the Resource User",
+                'code' => "user.recover",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Auditing in the Resource User",
+                'code' => "user.audit",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Blocking in the Resource User",
+                'code' => "user.block",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Unblocking in the Resource User",
+                'code' => "user.unblock",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Inactivate in the Resource User",
+                'code' => "user.inactivate",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
+            ],
+            [
+                'name' => "Permission for Activate in the Resource User",
+                'code' => "user.activate",
+                'type' => PermissionItemTypeEnum::ROUTE,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL
             ],
             [ 
                 'name' => "Permission for Accessing the Resource Client",
@@ -41,6 +153,14 @@ class PermissionItems extends Seeder
             [ 
                 'name' => "Permission for Auditing Resources",
                 'code' => "audit",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Recover Deleted Registers",
+                'code' => "status.recover",
                 'type' => PermissionItemTypeEnum::ITEM,
                 'status' => StatusEnum::ACTIVE,
                 'icon' => NULL,
@@ -65,6 +185,46 @@ class PermissionItems extends Seeder
             [ 
                 'name' => "Permission for Updating Deleted Registers",
                 'code' => "status.deleted.update",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Activate Inactivated Registers",
+                'code' => "status.activate",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Inactivate Registers",
+                'code' => "status.inactive",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Accessing Inactivated Registers",
+                'code' => "status.inactivated.view",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Updating Inactivated Registers",
+                'code' => "status.inactivated.update",
+                'type' => PermissionItemTypeEnum::ITEM,
+                'status' => StatusEnum::ACTIVE,
+                'icon' => NULL,
+                'icon_type' => NULL 
+            ],
+            [ 
+                'name' => "Permission for Unblock Blocked Registers",
+                'code' => "status.unblock",
                 'type' => PermissionItemTypeEnum::ITEM,
                 'status' => StatusEnum::ACTIVE,
                 'icon' => NULL,
@@ -115,22 +275,6 @@ class PermissionItems extends Seeder
             [ 
                 'name' => "Permission for Logout in the Resource Authentication",
                 'code' => "auth.logout",
-                'type' => PermissionItemTypeEnum::ROUTE,
-                'status' => StatusEnum::ACTIVE,
-                'icon' => NULL,
-                'icon_type' => NULL 
-            ],
-            [ 
-                'name' => "Permission for Token Information in the Resource Authentication",
-                'code' => "auth.information",
-                'type' => PermissionItemTypeEnum::ROUTE,
-                'status' => StatusEnum::ACTIVE,
-                'icon' => NULL,
-                'icon_type' => NULL 
-            ],
-            [ 
-                'name' => "Permission for Token Permissions in the Resource Authentication",
-                'code' => "auth.permission",
                 'type' => PermissionItemTypeEnum::ROUTE,
                 'status' => StatusEnum::ACTIVE,
                 'icon' => NULL,

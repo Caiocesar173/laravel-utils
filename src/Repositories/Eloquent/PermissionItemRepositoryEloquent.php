@@ -7,7 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Caiocesar173\Utils\Entities\PermissionItem;
 use Caiocesar173\Utils\Repositories\PermissionItemRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
-
+use Caiocesar173\Utils\Criterias\VisibleCriteria;
 
 /**
  * Class PermissionItemRepositoryEloquent.

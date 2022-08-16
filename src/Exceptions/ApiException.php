@@ -2,59 +2,22 @@
 
 namespace Caiocesar173\Utils\Exceptions;
 
-use Throwable;
+use Exception;
 use Caiocesar173\Utils\Classes\ApiReturn;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
-
-class ApiException extends ExceptionHandler
+class ApiException extends Exception
 {
-    /**
-     * A list of the exception types that are not reported.
-     *
-     * @var array
-     */
-    protected $dontReport = [
-        //
-    ];
+    protected $code;
+    protected $message;
 
-    /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     *
-     * @var array
-     */
-    protected $dontFlash = [
-        'password',
-        'password_confirmation',
-    ];
-
-    /**
-     * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function report(Throwable $exception)
+    public function __construct(string $message, int $code = 400)
     {
-        parent::report($exception);
+        $this->code = $code;
+        $this->message = $message;
     }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Exception
-     */
-    public function render($request, Throwable $exception)
-    {   
-        if ($exception instanceof ApiException)
-            return ApiReturn::ErrorException($exception);
-
-        return parent::render($request, $exception);
+    public function render()
+    {       
+        return ApiReturn::ErrorMessage($this->message, $this->code);
     }
 }

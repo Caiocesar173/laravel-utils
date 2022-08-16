@@ -13,34 +13,6 @@ When enableling the authentication method remember to implement [`laravel-passpo
 php artisan passport:install
 ```
 
-On `App\Modules\User.php` add HasApiTokens trait:
-
-```
-use Laravel\Passport\HasApiTokens;
-
-
-class User extends Authenticatable
-{
-    use HasApiTokens;
-
-```
-
-On `App\Modules\User.php` add to $fillable:
-
-```
-/**
- * The attributes that are mass assignable.
- *
- * @var string[]
- */
-protected $fillable = [
-    ...
-    'username',
-    'avatar',
-    'status',
-];
-```
-
 On your `config/auth` add the gurad api and place his driver as passport:
 
 ```
@@ -52,6 +24,19 @@ On your `config/auth` add the gurad api and place his driver as passport:
     ],
 ],
 ```
+
+On your `config/auth` inside providers replace de default User Model (App\Models\User::class):
+
+```
+'providers' => [
+    ...
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => Caiocesar173\Utils\Entities\User::class,
+    ],
+],
+```
+
 
 On your `config/services` add the provider api and place his driver as passport:
 

@@ -7,7 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Caiocesar173\Utils\Entities\NetworkArea;
 use Caiocesar173\Utils\Repositories\NetworkAreaRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
-
+use Caiocesar173\Utils\Criterias\VisibleCriteria;
 
 /**
  * Class NetworkAreaRepositoryEloquent.
@@ -31,6 +31,7 @@ class NetworkAreaRepositoryEloquent extends RepositoryAbstract implements Networ
      */
     public function boot()
     {
+        $this->pushCriteria(app(VisibleCriteria::class));
         $this->pushCriteria(app(RequestCriteria::class));
     }
 }

@@ -12,7 +12,6 @@ class Permission extends ModelAbstract
     
     protected $fillable = [
         'name',
-        'code',
         'icon',
         'icon_type',
     ];

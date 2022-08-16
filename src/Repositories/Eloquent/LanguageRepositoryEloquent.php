@@ -7,7 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Caiocesar173\Utils\Entities\Language;
 use Caiocesar173\Utils\Repositories\LanguageRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
-
+use Caiocesar173\Utils\Criterias\VisibleCriteria;
 
 /**
  * Class LanguageRepositoryEloquent.
@@ -31,6 +31,7 @@ class LanguageRepositoryEloquent extends RepositoryAbstract implements LanguageR
      */
     public function boot()
     {
+        $this->pushCriteria(app(VisibleCriteria::class));
         $this->pushCriteria(app(RequestCriteria::class));
     }
 }

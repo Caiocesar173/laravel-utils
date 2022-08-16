@@ -5,10 +5,12 @@ namespace Caiocesar173\Utils\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use Caiocesar173\Utils\Classes\ApiReturn;
-use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
-use Caiocesar173\Utils\Enum\StatusEnum;
 use Caiocesar173\Utils\Repositories\PermissionMapRepository;
+
+use Caiocesar173\Utils\Enum\StatusEnum;
+use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
 
 class AccessControlMiddleware
 {
@@ -35,11 +37,7 @@ class AccessControlMiddleware
             $routeName = Route::getCurrentRoute()->getName();
             $routeUrl = $request->getUri();
 
-            $hasPermission = app(PermissionMapRepository::class)
-                ->UserhasItem(auth()->user(), $routeName, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
-
-            if (is_string($hasPermission))
-                return ApiReturn::ErrorMessage($hasPermission, 403);
+            app(PermissionMapRepository::class)->UserhasItem(auth()->user(), $routeName, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
         }
 
         return $next($request);

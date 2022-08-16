@@ -24,20 +24,15 @@ abstract class ModelAbstract extends Model implements Transformable, AuditableCo
     protected $auditTranslate = [];
     protected $auditTranslateValue = [];
 
-    public static function edit($data, $identifier = null, $findBy = 'id')
+    public static function edit($data, ModelAbstract $model)
     {
         DB::beginTransaction();
         try {
-            $model = self::where($findBy, $identifier)->first();
-            if (is_null($model)) 
-                return "unable to find any results, searching: ($findBy = $identifier)";
-
             if ($model->update( $data )) 
             {
                 DB::commit();
                 return $model;
             }
-
             DB::rollback();
             return 'unable to save';
             
@@ -47,22 +42,16 @@ abstract class ModelAbstract extends Model implements Transformable, AuditableCo
         }
     }
 
-    public static function destroy($identifier = null, $findBy = 'id')
+    public static function exclude(ModelAbstract $model)
     {
         DB::beginTransaction();
         try {
-            $model = self::where($findBy, $identifier)->first();
-            if (is_null($model))
-                return "unable to find any results, searching: ($findBy = $identifier)";
-
-            $model->status_id = StatusEnum::EXCLUDED;
-
+            $model->status = StatusEnum::EXCLUDED;
             if ( $model->save() ) 
             {
                 DB::commit();
                 return true;
             }
-            
             DB::rollback();
             return 'unable to save';
             
@@ -70,6 +59,38 @@ abstract class ModelAbstract extends Model implements Transformable, AuditableCo
             DB::rollback();
             return 'ops, something went wrong...';
         }
+    }
+    
+    public function getEntityNameAttribute()
+    {
+        $entity = class_basename($this);
+        $entity = strtolower($entity);
+        return $entity;
+    }   
+
+    public function getEntityStatusAttribute()
+    {
+        return $this->status;
+    }
+
+    public function getIsActiveAttribute()
+    {
+        return $this->status == StatusEnum::ACTIVE;
+    }
+
+    public function getIsDestroyedAttribute()
+    {
+        return $this->status == StatusEnum::EXCLUDED;
+    }
+
+    public function getIsBlockedAttribute()
+    {
+        return $this->status == StatusEnum::BLOCKED;
+    }
+
+    public function getIsInactiveAttribute()
+    {
+        return $this->status == StatusEnum::INACTIVE;
     }
 
     public function getValueModel($field, $default = '')
@@ -98,11 +119,6 @@ abstract class ModelAbstract extends Model implements Transformable, AuditableCo
     {
         $class = str_replace('Entities', 'Repositories', get_called_class());
         return app($class . 'Repository');
-    }
-
-    public function preSave(array $attributes): array
-    {
-        return $attributes;
     }
 
     protected function hasManyRepository($class, $foreignKey = null, $localKey = null)
@@ -138,68 +154,5 @@ abstract class ModelAbstract extends Model implements Transformable, AuditableCo
         }
 
         return $relation;
-    }
-
-    /**
-     * Scope a query to Pluck The Multiple Columns
-     *
-     * This is Used to Pluck the multiple Columns in the table based
-     * on the existing query builder instance
-     *
-     * @author Manojkiran.A <manojkiran10031998@gmail.com>
-     * @version 0.0.2
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param string $keyColumn the columns Which is used to set the key of array
-     * @param array $extraFileds the list of columns that need to plucked in the table
-     * @return \Illuminate\Support\Collection
-     * @throws Illuminate\Database\QueryException
-     **/
-    public function scopePluckMultiple($query, string $keyColumn, array $extraFileds): \Illuminate\Support\Collection
-    {
-        //pluck all the id based on the query builder instance class
-        $keyColumnPluck = $query->pluck($keyColumn)->toArray();
-
-        //start @deprecated because slower than foreach
-
-        //anonymous callback method to iterate over the each fileds of table
-
-        // $callBcakMethod = function ($eachValue) use ($query) {
-        //     $eachQuery[$eachValue] = $query->pluck($eachValue)->toArray();
-        //     return $eachQuery;
-        // };
-        //now we are collapsing the array single time to get the propered array
-
-        // $extraFields = Arr::collapse(array_map($callBcakMethod, $extraFileds));
-
-        //end @deprecated because slower than foreach
-
-        //iterating Through All Other Fileds and Plucking it each Time
-        foreach ((array)$extraFileds as  $eachFiled)
-            $extraFields[$eachFiled] =   $query->pluck($eachFiled)->toArray();
-
-        //now we are done with plucking the Required Columns
-        //we need to map all the values to each key
-
-        //get all the keys of extra fileds and sets as array key or index
-        $arrayKeys = array_keys($extraFields);
-        //get all the extra fileds array and mapping it to eack key
-        $arrayValues = array_map(
-            function ($value) use ($arrayKeys) {
-                return array_combine($arrayKeys, $value);
-            },
-            call_user_func_array('array_map', array_merge(
-                array(function () {
-                    return func_get_args();
-                }),
-                $extraFields
-            ))
-        );
-        //now we are done with the array now Convert it to Collection
-        return new \Illuminate\Support\Collection(array_combine($keyColumnPluck, $arrayValues));
-    }
-
-    public function isDestroyed()
-    {
-        return $this->status == StatusEnum::EXCLUDED;
     }
 }

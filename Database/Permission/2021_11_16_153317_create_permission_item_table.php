@@ -19,7 +19,7 @@ class CreatePermissionItemTable extends Migration
             $table->uuid('id')->primary();
 
             $table->string('name', 220);
-			$table->string('code', 220)->nullable();
+			$table->string('code', 220)->unique();
 
             $table->string('icon', 220)->nullable();
 			$table->string('icon_type', 220)->nullable();

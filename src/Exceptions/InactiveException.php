@@ -5,7 +5,7 @@ namespace Caiocesar173\Utils\Exceptions;
 use Exception;
 use Caiocesar173\Utils\Classes\ApiReturn;
 
-class NotFoundException extends Exception
+class InactiveException extends Exception
 {
     protected $id;
     protected $entityName;
@@ -18,6 +18,6 @@ class NotFoundException extends Exception
 
     public function render()
     {       
-        return ApiReturn::ErrorMessage("O registro com o código {$this->id} do tipo {$this->entityName} não foi localizado", 404);
+        return ApiReturn::ErrorMessage("O registro com o código {$this->id} do tipo {$this->entityName} se encontra inativo no momento", 409);
     }
 }

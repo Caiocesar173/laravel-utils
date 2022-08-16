@@ -2,12 +2,17 @@
 
 namespace Caiocesar173\Utils\Abstracts;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Caiocesar173\Utils\Classes\ApiReturn;
 use Caiocesar173\Utils\Abstracts\ServiceAbstract;
 use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
 use Caiocesar173\Utils\Repositories\PermissionMapRepository;
+use Caiocesar173\Utils\Exceptions\Handlers\NotFoundExceptionHandler;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+
+use App\Http\Controllers\Controller;
 
 abstract class ApiControllerAbstract extends Controller
 {
@@ -15,35 +20,37 @@ abstract class ApiControllerAbstract extends Controller
 
     public function __construct(Request $request)
     {
+        App::singleton(
+            ExceptionHandler::class,
+            NotFoundExceptionHandler::class
+        );
+
         $this->validateRequest($request);
     }
 
-    /**
-     * index
+    /** 
+     * search
      *
-     * @param  Request $request
+     * @param  array $data
+     * @param  string $idenifier
+     * @param  string $operator
+     * @param  string $orderBy
      * 
-     * @return Illuminate\Support\Facades\Response
+     * 
+     * @return Caiocesar173\Utils\Abstracts\RepositoryAbstract
      */
-    public function index(Request $request)
+    private function search(array $data, $idenifier, $operator, $orderBy): RepositoryAbstract
     {
-        $perPage = $request->get('per_page', 6);
-        $page = $request->get('page', 1);
-        $idenifier = request()->get('identifier', 'id');
-        $operator = request()->get('operator', 'where');
-        $orderBy = request()->get('order_by', 'asc');
-
         if ($orderBy != 'asc' && $orderBy != 'desc')
             $orderBy = 'asc';
 
         $querry = [];
         $repository_fields = $this->getService()->getRepository()->getModel()->getFillable();
-        foreach (array_keys($request->all()) as $field) {
+        foreach (array_keys($data) as $field) {
             if (array_key_exists($field, array_flip($repository_fields)))
-                $querry[$field] = $request[$field];
+                $querry[$field] = $data[$field];
         }
         $querry = !empty($querry) ? $querry : null;
-
         $repository = $this->getService()->getRepository()->orderBy($idenifier, $orderBy);
 
         switch ($operator) {
@@ -61,11 +68,35 @@ abstract class ApiControllerAbstract extends Controller
                 $repository->where($querry);
         }
 
-        return $this->getService()->datatable($repository, ['*'], $perPage, $page);
+        return $repository;
     }
 
     /**
-     * search
+     * index
+     *
+     * @param  Request $request
+     * 
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function index(Request $request)
+    {
+        $idenifier = request()->get('identifier', 'id');
+        $operator = request()->get('operator', 'where');
+        $orderBy = request()->get('order_by', 'asc');
+
+        $perPage = $request->get('per_page', 6);
+        $page = $request->get('page', 1);
+
+        $data = $this->search($request->all(), $idenifier, $operator, $orderBy);
+
+        if ($data->all()->isEmpty())
+            return ApiReturn::ErrorMessage("Não foram encontrados recursos", 404);
+
+        return $this->getService()->datatable($data, ['*'], $perPage, $page);
+    }
+
+    /**
+     * show id
      * 
      * @param  string $id
      * 
@@ -73,22 +104,9 @@ abstract class ApiControllerAbstract extends Controller
      */
     public function show($id)
     {
-        $idenifier = request()->get('idenifier', 'id');
-
-        $entity = $this->getService()->getRepository()->getModel();
-        $entity = class_basename($entity);
-        $entity = strtolower($entity);
-
-        try {
-            $data = $this->getService()->getRepository()->where($idenifier, $id)->get();
-
-            if (is_null($data))
-                return ApiReturn::ErrorMessage("O registro do tipo {$entity} com o {$idenifier} {$id} nao foi localizado", 404);
-
-            return ApiReturn::SuccessMessage("$entity", 200, $data);
-        } catch (\Exception $e) {
-            return ApiReturn::ErrorMessage("O registro do tipo {$entity} com o {$idenifier} {$id} nao foi localizado", 404);
-        }
+        $entity = $this->getService()->entityName;
+        $data = $this->getService()->find($id);
+        return ApiReturn::SuccessMessage("$entity", 200, $data);
     }
 
     /**
@@ -127,21 +145,90 @@ abstract class ApiControllerAbstract extends Controller
      */
     public function destroy($id)
     {
-        $delete = app(PermissionMapRepository::class)
-            ->UserhasItem(auth()->user(), 'status.delete', 'item', '', PermissionItemTypeEnum::ITEM);
+        $this->getService()->destroy($id);
+        return ApiReturn::SuccessMessage('Informações excluidas com sucesso', 200);
+    }
 
-        if (is_string($delete))
-            return ApiReturn::ErrorMessage($delete, 403);
+    /**
+     * recover
+     *
+     * @param  string $id
+     * 
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function recover($id)
+    {
+        if ($this->getService()->recover($id))
+            return ApiReturn::SuccessMessage('Informações restauradas com sucesso', 200);
 
-        $save = $this->getService()->destroy($id);
+        return ApiReturn::ErrorMessage('Informações não puderam ser restauradas', 400);
+    }
 
-        if (is_string($save))
-            return ApiReturn::ErrorMessage($save, 400);
+    /**
+     * inactivate
+     *
+     * @param  string $id
+     * 
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function inactivate($id)
+    {
+        if ($this->getService()->recover($id))
+            return ApiReturn::SuccessMessage('Informações desativadas com sucesso', 200);
 
+        return ApiReturn::ErrorMessage('Informações não puderam ser desativadas', 400);
+    }
+
+
+    /**
+     * activate
+     *
+     * @param  string $id
+     * 
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function activate($id)
+    {
+        $entity = $this->find($id);
+        if ($entity->isInactive)
+            return $this->setActive($entity);
+
+        return false;
+    }
+
+    /**
+     * block
+     *
+     * @param  string $id
+     * 
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function block($id)
+    {
+        $this->getService()->block($id);
+        return ApiReturn::SuccessMessage('Informações bloqueadas com sucesso', 200);
+    }
+
+    /**
+     * unblock
+     *
+     * @param  string $id
+     * 
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function unblock($id)
+    {
+        $updateBlocked = app(PermissionMapRepository::class)
+            ->UserhasItem(auth()->user(), 'status.blocked.update', 'item', '', PermissionItemTypeEnum::ITEM);
+
+        if (is_string($updateBlocked))
+            return ApiReturn::ErrorMessage($updateBlocked, 403);
+
+        $save = $this->getService()->unblock($id);
         if ($save)
-            return ApiReturn::SuccessMessage('Informações excluidas com sucesso', 200);
+            return ApiReturn::SuccessMessage('Informações desbloqueadas com sucesso', 200);
 
-        return ApiReturn::ErrorMessage('Não foi possivel excluir as informações', 400);
+        return ApiReturn::ErrorMessage('Não foi possivel desbloqueadar as informações', 400);
     }
 
     /**
@@ -168,72 +255,6 @@ abstract class ApiControllerAbstract extends Controller
     }
 
     /**
-     * recover
-     *
-     * @param  string $id
-     * 
-     * @return Illuminate\Support\Facades\Response
-     */
-    public function recover($id)
-    {
-        $updateDeleted = app(PermissionMapRepository::class)
-            ->UserhasItem(auth()->user(), 'status.deleted.update', 'item', '', PermissionItemTypeEnum::ITEM);
-
-        if (is_string($updateDeleted))
-            return ApiReturn::ErrorMessage($updateDeleted, 403);
-
-        $save = $this->getService()->recover($id);
-        if ($save)
-            return ApiReturn::SuccessMessage('Informações restauradas com sucesso', 200);
-
-        return ApiReturn::ErrorMessage('Não foi possivel restaurar as informações', 400);
-    }
-
-    /**
-     * block
-     *
-     * @param  string $id
-     * 
-     * @return Illuminate\Support\Facades\Response
-     */
-    public function block($id)
-    {
-        $block = app(PermissionMapRepository::class)
-            ->UserhasItem(auth()->user(), 'status.block', 'item', '', PermissionItemTypeEnum::ITEM);
-
-        if (is_string($block))
-            return ApiReturn::ErrorMessage($block, 403);
-
-        $save = $this->getService()->block($id);
-        if ($save)
-            return ApiReturn::SuccessMessage('Informações bloqueadas com sucesso', 200);
-
-        return ApiReturn::ErrorMessage('Não foi possivel bloqueadar as informações', 400);
-    }
-
-    /**
-     * unblock
-     *
-     * @param  string $id
-     * 
-     * @return Illuminate\Support\Facades\Response
-     */
-    public function unblock($id)
-    {
-        $updateBlocked = app(PermissionMapRepository::class)
-            ->UserhasItem(auth()->user(), 'status.blocked.update', 'item', '', PermissionItemTypeEnum::ITEM);
-
-        if (is_string($updateBlocked))
-            return ApiReturn::ErrorMessage($updateBlocked, 403);
-
-        $save = $this->getService()->unblock($id);
-        if ($save)
-            return ApiReturn::SuccessMessage('Informações desbloqueadas com sucesso', 200);
-
-        return ApiReturn::ErrorMessage('Não foi possivel desbloqueadar as informações', 400);
-    }
-
-    /**
      * validateRequest
      *
      * @param  Request $request
@@ -244,6 +265,6 @@ abstract class ApiControllerAbstract extends Controller
     protected function validateRequest(Request $request)
     {
         $rules = $this->getService()->getRequest()->rules();
-        return $this->getService()->getRequest()->validate($rules, $request->all());
+        $validate = $this->getService()->getRequest()->validate($rules, $request->all());
     }
 }

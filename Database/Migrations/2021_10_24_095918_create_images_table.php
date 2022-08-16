@@ -1,0 +1,41 @@
+<?php
+
+use Caiocesar173\Utils\Enum\StatusEnum;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateImagesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('images', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('responsable');
+            $table->json('base64');
+            $table->string('name', 100);
+            $table->string('size', 100);
+            $table->string('type', 100);
+
+            $table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::disableForeignKeyConstraints();
+        Schema::drop('images');
+        Schema::enableForeignKeyConstraints();
+    }
+}

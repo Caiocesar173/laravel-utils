@@ -7,7 +7,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Caiocesar173\Utils\Entities\PhoneArea;
 use Caiocesar173\Utils\Repositories\PhoneAreaRepository;
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
-
+use Caiocesar173\Utils\Criterias\VisibleCriteria;
 
 /**
  * Class PhoneAreaRepositoryEloquent.
@@ -31,6 +31,7 @@ class PhoneAreaRepositoryEloquent extends RepositoryAbstract implements PhoneAre
      */
     public function boot()
     {
+        $this->pushCriteria(app(VisibleCriteria::class));
         $this->pushCriteria(app(RequestCriteria::class));
     }
 }
