@@ -25,9 +25,6 @@ class SeedServiceProvider extends ServiceProvider
     {
         $this->seeds_path = __DIR__.'/../../Database/Seeds';
 
-        if(env('UTILS_SEEDS_ENABLE') !== TRUE)
-            return;
-
         if ($this->app->runningInConsole()) {
             if ($this->isConsoleCommandContains([ 'db:seed', '--seed' ], [ '--class', 'help', '-h' ])) {
                 $this->addSeedsAfterConsoleCommandFinished();
@@ -152,17 +149,15 @@ class SeedServiceProvider extends ServiceProvider
 
     protected function getSeedsEnable()
     {
-        $seeds = [];
         $seeds_path = $this->seeds_path;
 
-        if( env('UTILS_STUATION_ENABLE') === TRUE ) 
-        {
-            $files = [
-                "$seeds_path/Situation/Situations.php",
-            ];
-
-            array_push($seeds, $files);
-        }
+        $seeds = [
+            "$seeds_path/Situation/Situations.php",
+            "$seeds_path/Permission/Permissions.php",
+            "$seeds_path/Permission/PermissionItems.php",
+            "$seeds_path/Permission/PermissionMaps.php",
+            "$seeds_path/Authentication/Users.php",
+        ];
 
         if( env('UTILS_GEOLOC_ENABLE') === TRUE ) 
         {
@@ -182,27 +177,6 @@ class SeedServiceProvider extends ServiceProvider
                 
                 "$seeds_path/GeoInfo/Zones/TimeZones.php", 
                 "$seeds_path/GeoInfo/Zones/TimeZoneMaps.php", 
-            ];
-
-            array_push($seeds, $files);
-        }
-        
-
-        if( env('UTILS_PERMISSION_ENABLE') === TRUE ) 
-        {
-            $files = [
-                "$seeds_path/Permission/Permissions.php",
-                "$seeds_path/Permission/PermissionItems.php",
-                "$seeds_path/Permission/PermissionMaps.php",
-            ];
-
-            array_push($seeds, $files);
-        }
-
-        if( env('UTILS_AUTHENTICATION_ENABLE') === TRUE ) 
-        {
-            $files = [
-                "$seeds_path/Authentication/Users.php",
             ];
 
             array_push($seeds, $files);
