@@ -23,22 +23,20 @@ class AccessControlMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (env('UTILS_PERMISSION_ENABLE')) {
-            $user = $request->user();
-            if ($user->status == StatusEnum::BLOCKED)
-                return ApiReturn::ErrorMessage("Usuário Bloqueado", 403);
+        $user = $request->user();
+        if ($user->status == StatusEnum::BLOCKED)
+            return ApiReturn::ErrorMessage("Usuário Bloqueado", 403);
 
-            if ($user->status == StatusEnum::EXCLUDED)
-                return ApiReturn::ErrorMessage("Usuário Excluído", 410);
+        if ($user->status == StatusEnum::EXCLUDED)
+            return ApiReturn::ErrorMessage("Usuário Excluído", 410);
 
-            if ($user->status == StatusEnum::INACTIVE)
-                return ApiReturn::ErrorMessage("Usuário Desativado", 404);
+        if ($user->status == StatusEnum::INACTIVE)
+            return ApiReturn::ErrorMessage("Usuário Desativado", 404);
 
-            $routeName = Route::getCurrentRoute()->getName();
-            $routeUrl = $request->getUri();
+        $routeName = Route::getCurrentRoute()->getName();
+        $routeUrl = $request->getUri();
 
-            app(PermissionMapRepository::class)->UserhasItem(auth()->user(), $routeName, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
-        }
+        app(PermissionMapRepository::class)->UserhasItem(auth()->user(), $routeName, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
 
         return $next($request);
     }

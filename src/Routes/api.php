@@ -28,5 +28,4 @@
 
 use Caiocesar173\Utils\Classes\Routes;
 
-if (env('UTILS_API_ROUTES_ENABLE') === TRUE) 
-    Routes::RequirePath(__DIR__.'/api');
+Routes::RequirePath(__DIR__ . '/api');

@@ -19,22 +19,15 @@ class UtilsServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        if (env('UTILS_WEB_ROUTES_ENABLE') === TRUE)
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
 
-        if (env('UTILS_API_ROUTES_ENABLE') === TRUE)
-            $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
 
-        if (env('UTILS_LOGS_ENABLE') === TRUE) {
-            $this->loadMigrationsFrom(__DIR__ . '/../../Database/LogMigrations');
-            app(Router::class)->aliasMiddleware('Log', RequestLogMiddleware::class);
-        }
+        $this->loadMigrationsFrom(__DIR__ . '/../../Database/LogMigrations');
+        app(Router::class)->aliasMiddleware('Log', RequestLogMiddleware::class);
 
-        if (env('UTILS_MIGRATIONS_ENABLE') === TRUE)
-            $this->loadMigrationsFrom(__DIR__ . '/../../Database/Migrations');
-
-        if (env('UTILS_PERMISSION_ENABLE') === TRUE)
-            $this->loadMigrationsFrom(__DIR__ . '/../../Database/Permission');
+        $this->loadMigrationsFrom(__DIR__ . '/../../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../../Database/Permission');
 
         if (env('UTILS_GEOLOC_ENABLE') === TRUE) {
             $this->loadMigrationsFrom(__DIR__ . '/../../Database/GeoInfo/Geo');
@@ -48,10 +41,8 @@ class UtilsServiceProvider extends ServiceProvider
         $this->app->register(AuditingServiceProvider::class);
         $this->app->singleton(AuthenticationExceptions::class);
 
-        if (env('UTILS_AUTHENTICATION_ENABLE') === TRUE) {
-            Passport::routes();
-            app(Router::class)->aliasMiddleware('AccessControl', AccessControlMiddleware::class);
-        }
+        Passport::routes();
+        app(Router::class)->aliasMiddleware('AccessControl', AccessControlMiddleware::class);
     }
 
     public function register()

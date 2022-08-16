@@ -41,7 +41,7 @@ class Users extends Seeder
                 'permission' => 'Administrador',
             ]
         ];
-        
+
         Schema::disableForeignKeyConstraints();
         DB::table('users')->truncate();
         foreach ($users as $user) {
@@ -50,25 +50,22 @@ class Users extends Seeder
             $this->command->info("\nInserted user from" . $user["name"] . " [" . count($user) . "]..\n");
         }
 
-        if(env('UTILS_PERMISSION_ENABLE'))
-        {
-            foreach ($permissions as $permission) 
-            {
-                $userEmail = $permission['user'];
-                $user = User::where('email', $userEmail)->first();
-                if(is_null($user))
-                    throw new \Exception("unable to find user: $userEmail", 1);
+        foreach ($permissions as $permission) {
+            $userEmail = $permission['user'];
+            $user = User::where('email', $userEmail)->first();
+            if (is_null($user))
+                throw new \Exception("unable to find user: $userEmail", 1);
 
-                $permissionName = $permission['permission'];
-                $group = Permission::where('name', $permissionName)->first();
-                if(is_null($group))
-                    throw new \Exception("unable to find Permission Item: $group", 1);
+            $permissionName = $permission['permission'];
+            $group = Permission::where('name', $permissionName)->first();
+            if (is_null($group))
+                throw new \Exception("unable to find Permission Item: $group", 1);
 
-                $save = app(PermissionMapService::class)->associate( $group, $user );
-                echo ("Inserted Permission Map: Group: {$permissionName} | Item: {$userEmail} | [" . array_search($permission, $permissions) . "]\n");
-                $this->command->info('Inserted map from' .  $permissionName . ' [' . array_search($permission, $permissions) . ']..');
-            }
+            $save = app(PermissionMapService::class)->associate($group, $user);
+            echo ("Inserted Permission Map: Group: {$permissionName} | Item: {$userEmail} | [" . array_search($permission, $permissions) . "]\n");
+            $this->command->info('Inserted map from' .  $permissionName . ' [' . array_search($permission, $permissions) . ']..');
         }
+
         Schema::enableForeignKeyConstraints();
     }
 }
