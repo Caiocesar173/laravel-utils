@@ -17,7 +17,7 @@ class ApiException extends Exception
     }
 
     public function render()
-    {       
+    {
         return ApiReturn::ErrorMessage($this->message, $this->code);
     }
 }

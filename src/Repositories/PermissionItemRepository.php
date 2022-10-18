@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface PermissionItemRepository extends RepositoryInterface
 {
-
+    //
 }

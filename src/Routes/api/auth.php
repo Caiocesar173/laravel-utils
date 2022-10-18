@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Caiocesar173\Utils\Http\Controllers\LoginController;
 
-
 Route::as('login')->get('login', [LoginController::class, 'unauthorized']);
 Route::as('auth.login')->post('login', [LoginController::class, 'login']);
 

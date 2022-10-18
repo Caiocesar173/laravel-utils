@@ -2,15 +2,13 @@
 
 namespace Caiocesar173\Utils\Http\Controllers;
 
+use Caiocesar173\Utils\Enum\StatusEnum;
+use Caiocesar173\Utils\Classes\ApiReturn;
+use Caiocesar173\Utils\Abstracts\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
-use App\Providers\RouteServiceProvider;
-
-use Caiocesar173\Utils\Classes\ApiReturn;
-use Caiocesar173\Utils\Enum\StatusEnum;
 
 class LoginController extends Controller
 {
@@ -53,14 +51,14 @@ class LoginController extends Controller
     /**
      * Attempt to log the user into the application.
      *
-     * @param  \Illuminate\Http\Requeswt  $request
+     * @param  \Illuminate\Http\Request $request
      * @return bool
      */
     protected function attemptLogin(Request $request)
     {   
         $this->token = Auth::attempt($this->credentials($request));
 
-        if(!$this->token)
+        if (!$this->token)
             return ApiReturn::ErrorMessage("Credenciais Inválidas", 401);
 
         $this->token = $this->guard()->user()->createToken('Laravel Password Grant Client')->accessToken;
@@ -70,26 +68,26 @@ class LoginController extends Controller
     /**
      * Send the response after the user was authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     protected function sendLoginResponse(Request $request)
-    {      
+    {
         $this->clearLoginAttempts($request);
 
         if ($response = $this->authenticated($request, $this->guard()->user()))
             return $response;
 
-        if(!$this->token)
+        if (!$this->token)
             return ApiReturn::ErrorMessage("Credenciais Inválidas", 401);
 
-        return ApiReturn::KeyMessage( 'Bearer', 200, $this->token, 'token');
+        return ApiReturn::KeyMessage('Bearer', 200, $this->token, 'token');
     }
 
     /**
      * Get the failed login response instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -102,19 +100,23 @@ class LoginController extends Controller
     /**
      * Get the needed authorization credentials from the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     protected function credentials(Request $request)
     {
-        $fieldType = filter_var($request->{$this->username()}, FILTER_VALIDATE_EMAIL) ? 'email' : 'document';
-        return [$fieldType => $request->{$this->username()}, 'password' => $request->password, 'status' => StatusEnum::ACTIVE];
+        $fieldType = filter_var($request->{$this->username()}, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        return [
+            $fieldType => $request->{$this->username()},
+            'password' => $request->password,
+            'status' => StatusEnum::ACTIVE
+        ];
     }
 
     /**
      * The user has been authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  mixed  $user
      * @return mixed
      */

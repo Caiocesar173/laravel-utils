@@ -1,9 +1,10 @@
 <?php
 
 use Caiocesar173\Utils\Enum\StatusEnum;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateImagesTable extends Migration
 {
@@ -24,6 +25,7 @@ class CreateImagesTable extends Migration
 
             $table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

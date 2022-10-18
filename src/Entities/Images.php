@@ -3,7 +3,7 @@
 namespace Caiocesar173\Utils\Entities;
 
 use Caiocesar173\Utils\Abstracts\ModelAbstract;
-
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Images extends ModelAbstract
 {
@@ -24,8 +24,13 @@ class Images extends ModelAbstract
         'base64' => 'array'
     ];
 
-    public function responsable()
+    /**
+     * Get the responsable for the image.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function responsable(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo('responsable', 'responsable_type', 'responsable_id', 'id');
     }
 }

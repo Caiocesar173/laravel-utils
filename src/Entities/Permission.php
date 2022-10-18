@@ -4,10 +4,9 @@ namespace Caiocesar173\Utils\Entities;
 
 use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
-
 class Permission extends ModelAbstract 
 {
-    protected $table = 'permission';
+    protected $table = 'permissions';
     protected $primaryKey = 'id';
     
     protected $fillable = [

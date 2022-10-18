@@ -24,10 +24,10 @@ class AccessControlMiddleware
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user->status == StatusEnum::BLOCKED)
+        if ($user->isBlocked)
             return ApiReturn::ErrorMessage("Usuário Bloqueado", 403);
 
-        if ($user->status == StatusEnum::EXCLUDED)
+        if (!is_null($user->deleted_at))
             return ApiReturn::ErrorMessage("Usuário Excluído", 410);
 
         if ($user->status == StatusEnum::INACTIVE)

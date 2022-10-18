@@ -23,7 +23,7 @@ The package comes with most of everything you may need for develop large applica
     composer require caiocesar173/laravel-utils
     ```
 
-2. publish owenit via the following command:
+2. Publish owenit via the following command:
     ```shell
     php artisan vendor:publish --provider "OwenIt\Auditing\AuditingServiceProvider" --tag="config"
     ```
@@ -63,14 +63,35 @@ The package comes with most of everything you may need for develop large applica
 7. Seed the database via the following command:
     ```shell
     php artisan db:seed
+
     ```
 8. Done!
 
 
+## Language
+Additionally, the package comes with the [`laravel-pt-BR-localization`](https://github.com/lucascudo/laravel-pt-BR-localization) language support.
+To install it, just do:
+
+1. Publish the translation
+    ```shell
+    php artisan vendor:publish --tag=laravel-pt-br-localization
+    ```
+
+2. On your `config/app.php` in `locale` replace de default `en` with:
+    ```shell
+    'locale' => 'pt-BR',
+    ```
+
+3. On your `config/app.php` in `timezone` replace de default `UTC` with:
+    ```shell
+    'timezone' => 'America/Sao_Paulo',
+    ```
+4. Done!
+
 # Social Login
 On your `config/services` add the provider api and place his driver as passport:
 
-```
+```shell
 'provider_name' => [
     client_id => env(PROVIDER_NAME_CLIENT_ID),
     client_secret => env(PROVIDER_NAME_CLIENT_SECRET),
@@ -79,8 +100,10 @@ On your `config/services` add the provider api and place his driver as passport:
 ```
 
 # Envirement Varibles
-The Varibles accepted on your `.env`: 
+The Varibles accepted on `.env`: 
 
 ```
+    #In case you olny want to use the classes inside the package set the UTILS_ONLY_CLASSES=TRUE
+    UTILS_ONLY_CLASSES = FALSE
     UTILS_GEOLOC_ENABLE = TRUE #GeoLoc: locatins, coins, language and internet and phone zones
 ```
