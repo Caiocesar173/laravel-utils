@@ -7,7 +7,7 @@ use Caiocesar173\Utils\Abstracts\ModelAbstract;
 
 class PermissionItem extends ModelAbstract 
 {
-    protected $table = 'permission_item';
+    protected $table = 'permission_items';
     protected $primaryKey = 'id';
     
     protected $fillable = [

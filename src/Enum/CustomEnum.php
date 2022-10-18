@@ -8,13 +8,12 @@ abstract class CustomEnum
 
     public static function getValue($key)
     {
-        $lista = static::lists();
+        $list = static::lists();
 
-        if (!isset($lista[$key])):
+        if (!isset($list[$key]))
             return '';
-        endif;
 
-        return $lista[$key];
+        return $list[$key];
     }
 
     public static function keys()

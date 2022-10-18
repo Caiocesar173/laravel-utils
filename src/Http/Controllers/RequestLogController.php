@@ -2,11 +2,11 @@
 namespace Caiocesar173\Utils\Http\Controllers;
 
 use Caiocesar173\Utils\Abstracts\ServiceAbstract;
-use Caiocesar173\Utils\Abstracts\ApiControllerAbstract;
+use Caiocesar173\Utils\Abstracts\ControllerAbstract;
 use Caiocesar173\Utils\Services\RequestLogService;
 
 
-class RequestLogController extends ApiControllerAbstract
+class RequestLogController extends ControllerAbstract
 {   
     protected function getService(): ServiceAbstract
     {

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateAuditsTable extends Migration
 {
@@ -15,14 +15,14 @@ class CreateAuditsTable extends Migration
     {
         Schema::create('audits', function (Blueprint $table) {
             $table->bigIncrements('id');
-            
-            $table->string('user_id',36)->nullable();
-            $table->string('user_type',100)->nullable();
-            
+
+            $table->string('user_id', 36)->nullable();
+            $table->string('user_type', 100)->nullable();
+
             $table->string('event');
-            
-            $table->string('auditable_id',36);
-            $table->string('auditable_type',100);
+
+            $table->string('auditable_id', 36);
+            $table->string('auditable_type', 100);
 
             $table->json('old_values')->nullable();
             $table->json('new_values')->nullable();
@@ -31,6 +31,7 @@ class CreateAuditsTable extends Migration
             $table->string('user_agent', 1023)->nullable();
             $table->string('tags')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index(['user_id', 'user_type']);
         });

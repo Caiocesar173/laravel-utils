@@ -15,16 +15,8 @@ abstract class ServiceAbstract
 
     public function __construct()
     {
-        $model = $this->getRepository()->model();
-        $model = new $model();
-
+        $model = $this->getRepository()->makeModel();
         $this->entityName = $model->entityName;
-    }
-
-    private function setActive($entity)
-    {
-        $entity->status = StatusEnum::ACTIVE;
-        return $entity->save();
     }
 
     public function create($request)
@@ -44,35 +36,34 @@ abstract class ServiceAbstract
 
     public function update($request, $id)
     {
-        $model = $this->find($id);
-        return $this->getRepository()->edit($request->all(), $model);
+        $repository = $this->find($id);
+        return $repository->edit($request->all());
     }
 
     //Delete
     public function destroy($id)
     {
-        $entity = $this->find($id);
-        $this->getRepository()->exclude($entity);
+        $repository = $this->find($id);
+        return $repository->exclude();
     }
 
     public function recover($id)
     {
-        $model = $this->find($id);
-        return $this->getRepository()->recover($model);
+        $repository = $this->find($id);
+        return $repository->activate();
     }
 
     //Inactivate
     public function inactivate($id)
     {
-        $model = $this->find($id);
-        return $this->getRepository()->inactivate($model);
+        $repository = $this->find($id);
+        return $repository->inactivate();
     }
 
     public function activate($id)
-    {
-        $entity = $this->find($id);
-        if ($entity->isInactive)
-            return $this->setActive($entity);
+    {   
+        $repository = $this->find($id);
+        if ($repository->isInactive) return $repository->activate();
 
         return false;
     }
@@ -80,27 +71,24 @@ abstract class ServiceAbstract
     //Block
     public function unblock($id)
     {
-        $entity = $this->find($id);
-        if ($entity->isBlocked)
-            return $this->setActive($entity);
+        $repository = $this->find($id);
+        if ($repository->isBlocked) return $repository->activate();
 
         return false;
     }
 
     public function block($id)
     {
-        $entity = $this->find($id);
-        if ($entity->isBlocked)
-            return false;
+        $repository = $this->find($id);
+        if ($repository->isBlocked) return false;
 
-        $entity->status = StatusEnum::BLOCKED;
-        return $entity->save();
+        return $repository->block();
     }
 
     //Audit
     public function audit($id)
     {
-        $entity = $this->find($id);
-        return $entity->audits;
+        $repository = $this->find($id);
+        return $repository->audits;
     }
 }

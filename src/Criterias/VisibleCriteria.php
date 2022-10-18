@@ -15,14 +15,10 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 class VisibleCriteria implements CriteriaInterface
 {
-    public function __construct()
-    {
-    }
-
     /**
      * Apply criteria in query repository
      *
-     * @param string              $model
+     * @param $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
@@ -31,15 +27,17 @@ class VisibleCriteria implements CriteriaInterface
     {
         $statusArray = $this->getStatus();
         $table = $repository->makeModel()->getTable();
-        return $model->whereIn("{$table}.status", $statusArray);
+        $query = $model->whereIn("{$table}.status", $statusArray);
+      
+        if ($this->viewDeleted()) 
+            $query->withTrashed()->where("{$table}.deleted_at" ,'!=', null);
+        
+        return $query;
     }
 
     private function getStatus()
     {
         $baseStatus = [StatusEnum::ACTIVE];
-
-        if ($this->viewDeleted())
-            array_push($baseStatus, StatusEnum::EXCLUDED);
 
         if ($this->viewBlocked())
             array_push($baseStatus, StatusEnum::BLOCKED);
@@ -52,7 +50,6 @@ class VisibleCriteria implements CriteriaInterface
 
     private function viewDeleted()
     {
-        
         return app(PermissionMapRepository::class)->UserhasItem(auth()->user(), 'status.deleted.view', 'item', '', PermissionItemTypeEnum::ITEM);
     }
 

@@ -55,6 +55,11 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    public function setThrowable(bool $throwable = true)
+    {
+        $this->throwable = $throwable;
+    }
+
     public function UserhasItem(User $user, $route, String $routeUrl, $type = PermissionItemTypeEnum::ROUTE)
     {
         $serachRoute = $route;
@@ -98,8 +103,9 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
         $map = app($this->model())
             ->where('responsable_type', get_class($user))
             ->where('responsable_id', $user->id)
+            ->where('permission_type', Permission::class)
             ->first();
-
+            
         if (is_null($map)) {
             if ($this->throwable)
                 throw new ApiException("Usuario não cadastrado em grupo de permissão valido", 401);
@@ -151,6 +157,7 @@ class PermissionMapRepositoryEloquent extends RepositoryAbstract implements Perm
         $items = app($this->model())
             ->where('responsable_type', get_class($group))
             ->where('responsable_id', $group->id)
+            ->where('permission_type', PermissionItem::class)   
             ->get();
 
         if (empty($items))

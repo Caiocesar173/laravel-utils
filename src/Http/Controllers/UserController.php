@@ -5,13 +5,13 @@ namespace Caiocesar173\Utils\Http\Controllers;
 use Caiocesar173\Utils\Services\UserService;
 use Caiocesar173\Utils\Abstracts\ServiceAbstract;
 use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
+use Caiocesar173\Utils\Abstracts\ControllerAbstract;
 use Caiocesar173\Utils\Exceptions\NotAllowedException;
-use Caiocesar173\Utils\Abstracts\ApiControllerAbstract;
 use Caiocesar173\Utils\Repositories\PermissionMapRepository;
 
 use Illuminate\Http\Request;
 
-class UserController extends ApiControllerAbstract
+class UserController extends ControllerAbstract
 {
     protected $user;
     protected $userCanViewOthers = false;

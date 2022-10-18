@@ -1,5 +1,7 @@
 <?php
 
+use Caiocesar173\Utils\Enum\StatusEnum;
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -16,14 +18,16 @@ class CreateContinentTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('continent', function(Blueprint $table) {
-            $table->uuid('id')->primary();
+		Schema::create('continent', function (Blueprint $table) {
+			$table->uuid('id')->primary();
 
 			$table->string('name', 255);
 			$table->string('code', 15);
 
+			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
-        });
+			$table->softDeletes();
+		});
 	}
 
 	/**
@@ -33,8 +37,8 @@ class CreateContinentTable extends Migration
 	 */
 	public function down()
 	{
-        Schema::disableForeignKeyConstraints();
-        Schema::drop('continent');
-        Schema::enableForeignKeyConstraints();
+		Schema::disableForeignKeyConstraints();
+		Schema::drop('continent');
+		Schema::enableForeignKeyConstraints();
 	}
 }

@@ -5,7 +5,7 @@ namespace Caiocesar173\Utils\Classes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Datatable extends Model
+class DataTable extends Model
 {
     protected $table;
     protected $limit;
