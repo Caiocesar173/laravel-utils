@@ -17,13 +17,8 @@ class CreatePermissionMapsTable extends Migration
     {
         Schema::create('permission_maps', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
-            $table->string('responsable_type', 255);
-            $table->char('responsable_id', 36);
-
-            $table->string('permission_type', 255);
-            $table->char('permission_id', 36);
-
+            $table->morphs('permission');
+            $table->morphs('responsable');
             $table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
             $table->timestamps();
             $table->softDeletes();
@@ -37,6 +32,6 @@ class CreatePermissionMapsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_map');
+        Schema::dropIfExists('permission_maps');
     }
 }

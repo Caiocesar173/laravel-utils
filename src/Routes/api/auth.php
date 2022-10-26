@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use Caiocesar173\Utils\Http\Controllers\LoginController;
 
-Route::as('login')->get('login', [LoginController::class, 'unauthorized']);
-Route::as('auth.login')->post('login', [LoginController::class, 'login']);
+$controller = LoginController::class;
 
-Route::middleware(['Log:api.auth', 'auth:api', 'AccessControl'])->prefix('auth')->group(function () {
-    Route::as('auth.logout')->post('logout', [LoginController::class, 'logout']);
+Route::get('login'  ,['as' => 'login'      ,'uses' => "$controller@unauthorized" ]);
+Route::post('login' ,['as' => 'auth.login' ,'uses' => "$controller@login"        ]);
+
+Route::middleware(['Log:api.auth', 'auth:api', 'AccessControl'])->prefix('auth')->group(function () use ($controller) {
+    Route::post('logout', ['as' => 'auth.logout', 'uses' => "$controller@logout" ]);
 });

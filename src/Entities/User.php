@@ -5,10 +5,11 @@ namespace Caiocesar173\Utils\Entities;
 use Caiocesar173\Utils\Classes\Crypto;
 use Caiocesar173\Utils\Enum\StatusEnum;
 use Caiocesar173\Utils\Exceptions\ApiException;
-use Caiocesar173\Utils\Exceptions\PermissionGroupNotFound;
+use Caiocesar173\Utils\Database\Factories\UserFactory;
 use Caiocesar173\Utils\Services\PermissionMapService;
 use Caiocesar173\Utils\Exceptions\ValidatorException;
 use Caiocesar173\Utils\Repositories\PermissionRepository;
+use Caiocesar173\Utils\Exceptions\PermissionGroupNotFound;
 use Caiocesar173\Utils\Repositories\PermissionMapRepository;
 
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Laravel\Passport\HasApiTokens;
@@ -226,5 +228,10 @@ class User extends Authenticatable implements MustVerifyEmail, Transformable, Au
     public function getIsInactiveAttribute()
     {
         return $this->status == StatusEnum::INACTIVE;
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return UserFactory::new();
     }
 }

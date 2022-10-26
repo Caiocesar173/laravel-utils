@@ -3,11 +3,13 @@
 namespace Caiocesar173\Utils\Entities;
 
 use Caiocesar173\Utils\Abstracts\ModelAbstract;
+use Caiocesar173\Utils\Database\Factories\CurrencyFactory;
 use Caiocesar173\Utils\Exceptions\DefaultCurrencyException;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class Currency extends ModelAbstract
 {
-    protected $table = 'currency';
+    protected $table = 'currencies';
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -67,23 +69,20 @@ class Currency extends ModelAbstract
     /**
      * Get the resource country.
      *
-     * @return Caiocesar173\Utils\Entities\Country
+     * @return Model
      */
     public function country()
-    {
-        return $this->belongsTo(Country::class, 'country', 'id');
-    }
-
-    /**
-     * Get the resource country as an attribute.
-     *
-     * @return Caiocesar173\Utils\Entities\Country
-     */
-    public function getCountryAttribute(): Country
-    {
-        if (env("UTILS_GEOLOC_ENABLE"))
-            $this->country = app(Country::class)->where('id', $this->country)->first()->name;
+    {   
+        if(is_null($this->country)) return $this->country;
+        
+        if (env('UTILS_GEOLOC_ENABLE'))
+            return $this->belongsTo(Country::class, 'country', 'id');
 
         return $this->country;
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return CurrencyFactory::new();
     }
 }

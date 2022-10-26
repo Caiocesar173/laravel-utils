@@ -12,7 +12,6 @@ use Caiocesar173\Utils\Repositories\UserRepository;
 
 use Illuminate\Support\Facades\Hash;
 
-
 class UserService extends ServiceAbstract
 {
     public function getRepository(): RepositoryAbstract

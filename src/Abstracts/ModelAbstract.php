@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 abstract class ModelAbstract extends Model implements Transformable, AuditableContract
@@ -77,6 +78,8 @@ abstract class ModelAbstract extends Model implements Transformable, AuditableCo
         'updated_at',
         'deleted_at',
     ];
+
+    abstract protected static function newFactory(): Factory;
 
     /**
      * Update the resource.

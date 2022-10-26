@@ -1,4 +1,5 @@
 <?php
+
 namespace Caiocesar173\Utils\Abstracts;
 
 use Caiocesar173\Utils\Classes\ApiReturn;
@@ -6,7 +7,6 @@ use Caiocesar173\Utils\Classes\ApiReturn;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
-
 
 abstract class FormRequestAbstract extends FormRequest
 {
@@ -28,7 +28,11 @@ abstract class FormRequestAbstract extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response = ApiReturn::ErrorMessage( $validator->messages(), 400);
-        throw (new ValidationException($validator, $response))->status(400);
+        if (request()->isJson()) {
+            $response = ApiReturn::ErrorMessage($validator->messages(), 400);
+            throw (new ValidationException($validator, $response))->status(400);
+        }
+
+        return ['error' => $validator->messages()];
     }
 }

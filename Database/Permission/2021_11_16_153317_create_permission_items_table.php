@@ -18,14 +18,11 @@ class CreatePermissionItemsTable extends Migration
     {
         Schema::create('permission_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
             $table->string('name', 220);
             $table->string('code', 220)->unique();
-
             $table->string('icon', 220)->nullable();
             $table->string('icon_type', 220)->nullable();
             $table->enum('type', PermissionItemTypeEnum::keys())->nullable();
-
             $table->enum('status', StatusEnum::keys())->default(StatusEnum::ACTIVE);
             $table->timestamps();
             $table->softDeletes();

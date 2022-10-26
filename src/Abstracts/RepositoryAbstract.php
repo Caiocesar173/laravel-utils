@@ -37,6 +37,11 @@ abstract class RepositoryAbstract extends BaseRepository
         return $this->model->create($attributes);
     }
 
+    public function setReturnType($returnModel = false)
+    {
+        $this->throwExceptions = $returnModel;
+    }
+
     //Update Functions
     public function edit(array $attributes)
     {   
@@ -89,7 +94,12 @@ abstract class RepositoryAbstract extends BaseRepository
     public function Excludable(): bool
     {
         if ($this->model->isDestroyed)
-            throw new NotFoundException($this->model->id, $this->model->entityName);
+        {
+            if ($this->throwExceptions)
+                throw new NotFoundException($this->model->id, $this->model->entityName);
+
+            return "O registro com o código {$this->model->id} do tipo {$this->model->entityName} não foi localizado";
+        }
 
         if (app(PermissionMapRepository::class)->UserhasItem(auth()->user(), 'status.delete', 'item', '', PermissionItemTypeEnum::ITEM))
             return true;

@@ -15,15 +15,11 @@ class CreateAuditsTable extends Migration
     {
         Schema::create('audits', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->string('user_id', 36)->nullable();
             $table->string('user_type', 100)->nullable();
-
             $table->string('event');
-
             $table->string('auditable_id', 36);
             $table->string('auditable_type', 100);
-
             $table->json('old_values')->nullable();
             $table->json('new_values')->nullable();
             $table->text('url')->nullable();

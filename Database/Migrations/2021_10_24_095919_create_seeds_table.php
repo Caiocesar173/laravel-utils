@@ -22,7 +22,6 @@ class CreateSeedsTable extends Migration
             $table->uuid('id')->primary();
             $table->string('seed', 255)->unique();
             $table->integer('batch')->default(1);
-
             $table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
             $table->timestamps();
             $table->softDeletes();

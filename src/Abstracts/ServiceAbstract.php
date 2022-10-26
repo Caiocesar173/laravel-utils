@@ -2,7 +2,7 @@
 
 namespace Caiocesar173\Utils\Abstracts;
 
-use Caiocesar173\Utils\Enum\StatusEnum;
+
 use Caiocesar173\Utils\Abstracts\RepositoryAbstract;
 use Caiocesar173\Utils\Abstracts\FormRequestAbstract;
 
@@ -17,6 +17,11 @@ abstract class ServiceAbstract
     {
         $model = $this->getRepository()->makeModel();
         $this->entityName = $model->entityName;
+    }
+
+    public function setReturnType($returnModel = false)
+    {
+        $this->getRepository()->setReturnType($returnModel);
     }
 
     public function create($request)

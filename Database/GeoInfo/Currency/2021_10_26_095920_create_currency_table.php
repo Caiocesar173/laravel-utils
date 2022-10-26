@@ -18,17 +18,15 @@ class CreateCurrencyTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('currency', function (Blueprint $table) {
+		Schema::create('currencies', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-
 			$table->string('name', 255);
 			$table->string('code', 5)->unique();
 			$table->string('symbol', 255);
 
-			if (env('UTILS_GEOLOC_ENABLE')) {
-				$table->uuid('country')->nullable();
-				$table->foreign('country')->references('id')->on('country')->onDelete('cascade');
-			} else
+			if (env('UTILS_GEOLOC_ENABLE'))
+				$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
+			else
 				$table->string('country', 100)->nullable();
 
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
@@ -45,7 +43,7 @@ class CreateCurrencyTable extends Migration
 	public function down()
 	{
 		Schema::disableForeignKeyConstraints();
-		Schema::drop('currency');
+		Schema::drop('currencies');
 		Schema::enableForeignKeyConstraints();
 	}
 }

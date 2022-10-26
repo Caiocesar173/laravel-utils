@@ -20,7 +20,6 @@ class CreatePermissionsTable extends Migration
             $table->string('name', 220);
 			$table->string('icon', 220)->nullable();
 			$table->string('icon_type', 220)->nullable();
-            
             $table->enum('status', StatusEnum::keys())->default(StatusEnum::ACTIVE);
             $table->timestamps();
             $table->softDeletes();

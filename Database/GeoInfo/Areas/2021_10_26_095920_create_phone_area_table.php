@@ -18,17 +18,13 @@ class CreatePhoneAreaTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('phone_area', function(Blueprint $table) {
+		Schema::create('phone_areas', function(Blueprint $table) {
             $table->uuid('id')->primary();
-
 			$table->string('code', 100)->nullable();
 			$table->string('mobile', 100)->nullable();
 			$table->string('landline', 100)->nullable();
 			$table->string('gdp', 100)->nullable();
-    
-			$table->uuid('country');			
-			$table->foreign('country')->references('id')->on('country')->onDelete('cascade');
-			
+			$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -43,7 +39,7 @@ class CreatePhoneAreaTable extends Migration
 	public function down()
 	{
         Schema::disableForeignKeyConstraints();
-        Schema::drop('phone_area');
+        Schema::drop('phone_areas');
         Schema::enableForeignKeyConstraints();
 	}
 }

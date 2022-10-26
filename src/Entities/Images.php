@@ -3,7 +3,9 @@
 namespace Caiocesar173\Utils\Entities;
 
 use Caiocesar173\Utils\Abstracts\ModelAbstract;
+use Caiocesar173\Utils\Database\Factories\ImagesFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class Images extends ModelAbstract
 {
@@ -32,5 +34,10 @@ class Images extends ModelAbstract
     public function responsable(): MorphTo
     {
         return $this->morphTo('responsable', 'responsable_type', 'responsable_id', 'id');
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return ImagesFactory::new();
     }
 }

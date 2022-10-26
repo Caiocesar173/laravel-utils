@@ -3,18 +3,14 @@
 namespace Caiocesar173\Utils\Entities;
 
 use Caiocesar173\Utils\Abstracts\ModelAbstract;
-
+use Caiocesar173\Utils\Database\Factories\RequestLogFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RequestLog extends ModelAbstract
 {
-    protected $table = 'requests_log';
+    protected $table = 'requests_logs';
     protected $primaryKey = 'id';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'route',
         'user_agent',
@@ -30,5 +26,11 @@ class RequestLog extends ModelAbstract
         'ip',
         'mac',
         'location',
+        'situation'
     ];
+
+    protected static function newFactory(): Factory
+    {
+        return RequestLogFactory::new();
+    }
 }
