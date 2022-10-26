@@ -11,7 +11,7 @@
         "lucascudo/laravel-pt-br-localization": "^1.2",
         "owen-it/laravel-auditing": "^12.0",
         "prettus/l5-repository": "^2.7",
-        "spatie/laravel-sluggable": "^2.6",
+        "spatie/laravel-sluggable": "^3.4",
         "spatie/laravel-translatable": "^4.6",
         "stevebauman/location": "^6.2",
         "watson/validating": "^6.1"
