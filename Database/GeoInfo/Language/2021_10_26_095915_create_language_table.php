@@ -18,13 +18,11 @@ class CreateLanguageTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('language', function (Blueprint $table) {
+		Schema::create('languages', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-
 			$table->string('code', 100)->nullable();
 			$table->string('name', 100)->nullable();
 			$table->string('native', 100)->nullable();
-
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -39,7 +37,7 @@ class CreateLanguageTable extends Migration
 	public function down()
 	{
 		Schema::disableForeignKeyConstraints();
-		Schema::drop('language');
+		Schema::drop('languages');
 		Schema::enableForeignKeyConstraints();
 	}
 }

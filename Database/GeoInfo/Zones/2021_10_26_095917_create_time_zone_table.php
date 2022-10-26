@@ -18,15 +18,13 @@ class CreateTimeZoneTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('time_zone', function (Blueprint $table) {
+		Schema::create('time_zones', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-
 			$table->string("abbreviation", 255);
 			$table->string("offset", 255);
 			$table->string("offset_name", 255);
 			$table->string("name", 255);
 			$table->string("tz_name", 255);
-
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -41,7 +39,7 @@ class CreateTimeZoneTable extends Migration
 	public function down()
 	{
 		Schema::disableForeignKeyConstraints();
-		Schema::drop('time_zone');
+		Schema::drop('time_zones');
 		Schema::enableForeignKeyConstraints();
 	}
 }

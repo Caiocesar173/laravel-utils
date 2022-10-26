@@ -14,8 +14,8 @@ class SeederAbstract extends Seeder
     {
         $seeded = Seed::where('seed', $class)->first();
         if (is_null($seeded)) {
+            $save = parent::call($class, $silent, $parameters);
             Seed::create(['seed' => $class]);
-            parent::call($class, $silent, $parameters);
         }
         echo "\033[0;32mAlready Seeded [$class] \n";
         return null;

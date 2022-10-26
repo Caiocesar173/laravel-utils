@@ -18,9 +18,8 @@ class CreateNetworkAreaTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('network_area', function(Blueprint $table) {
+		Schema::create('network_areas', function(Blueprint $table) {
             $table->uuid('id')->primary();
-
 			$table->string('hosts', 100)->nullable();
 			$table->string('users', 100)->nullable();
 			$table->string('level_domain', 100)->nullable();
@@ -29,10 +28,7 @@ class CreateNetworkAreaTable extends Migration
 			$table->string('iso_numeric', 100)->nullable();
 			$table->string('area_km2', 100)->nullable();
 			$table->string('e164', 100)->nullable();
-    
-			$table->uuid('country');			
-			$table->foreign('country')->references('id')->on('country')->onDelete('cascade');
-
+			$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -47,7 +43,7 @@ class CreateNetworkAreaTable extends Migration
 	public function down()
 	{
         Schema::disableForeignKeyConstraints();
-        Schema::drop('network_area');
+        Schema::drop('network_areas');
         Schema::enableForeignKeyConstraints();
 	}
 }

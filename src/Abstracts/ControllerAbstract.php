@@ -24,15 +24,18 @@ abstract class ControllerAbstract extends Controller
 
     public function __construct(Request $request)
     {
-        if($request->isJson()) 
+        if ($request->isJson())
             $this->returnModel = false;
+
+        $this->getService()->setReturnType($this->returnModel);
 
         App::singleton(
             ExceptionHandler::class,
             NotFoundExceptionHandler::class
         );
 
-        $this->validateRequest($request);
+        $validation = $this->validateRequest($request);
+        if(isset($validation['error'])) return $validation->message();
     }
 
     /** 
@@ -366,11 +369,12 @@ abstract class ControllerAbstract extends Controller
     protected function validateRequest(Request $request)
     {
         $rules = $this->getService()->getRequest()->rules();
+        if (is_null($rules) || empty($rules)) foreach ($request->request->all() as $key => $value) $request->request->remove($key);
         $validate = $this->getService()->getRequest()->validate($rules, $request->all());
         return $validate;
     }
 
-      /**
+    /**
      * validateRequest
      *
      * @param  Request $request
@@ -383,6 +387,6 @@ abstract class ControllerAbstract extends Controller
         if (!is_null($this->returnModel))
             return $this->returnModel;
 
-        return false; 
+        return false;
     }
 }

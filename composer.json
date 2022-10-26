@@ -23,12 +23,15 @@
     "autoload": {
         "psr-4": {
             "Caiocesar173\\Utils\\": "src/"
-        }
+        }     
     },
     "autoload-dev": {
         "psr-4": {
             "Caiocesar173\\Utils\\": "src/"
-        }
+        },
+        "classmap": [
+            "database/seeders"
+        ]
     },
     "config": {
         "sort-packages": true

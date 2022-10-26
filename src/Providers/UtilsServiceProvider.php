@@ -37,6 +37,7 @@ class UtilsServiceProvider extends ServiceProvider
                 $this->loadMigrationsFrom(__DIR__ . '/../../Database/GeoInfo/Areas');
             }
 
+            $this->app->register(SeedServiceProvider::class);
             $this->app->register(AuditingServiceProvider::class);
             $this->app->singleton(AuthenticationExceptions::class);
             $this->app->register(LaravelPtBRLocalizationServiceProvider::class);

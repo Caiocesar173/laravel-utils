@@ -57,7 +57,10 @@ class NotFoundExceptionHandler extends ExceptionHandler
             $entityName = array_pop($models);
             $id = implode(',', $exception->getIds());
 
-            throw new NotFoundException($id, $entityName);
+            if($request->isJson())
+                throw new NotFoundException($id, $entityName);
+
+            return abort(404, "O registro com o código <b>{$id}</b> do tipo <b>{$entityName}</b> não foi localizado");
         }
 
         return parent::render($request, $exception);

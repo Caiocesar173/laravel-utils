@@ -3,11 +3,12 @@
 namespace Caiocesar173\Utils\Entities;
 
 use Caiocesar173\Utils\Abstracts\ModelAbstract;
-
+use Caiocesar173\Utils\Database\Factories\TimeZoneFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TimeZone extends ModelAbstract
 {
-    protected $table = 'time_zone';
+    protected $table = 'time_zones';
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -17,4 +18,9 @@ class TimeZone extends ModelAbstract
         'name',
         'tz_name',
     ];
+
+    protected static function newFactory(): Factory
+    {
+        return TimeZoneFactory::new();
+    }
 }

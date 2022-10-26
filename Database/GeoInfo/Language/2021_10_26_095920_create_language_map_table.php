@@ -18,14 +18,12 @@ class CreateLanguageMapTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('language_map', function (Blueprint $table) {
+		Schema::create('language_maps', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-
 			$table->uuid('country');
 			$table->uuid('language');
-
-			$table->foreign('country')->references('id')->on('country')->onDelete('cascade');
-			$table->foreign('language')->references('id')->on('language')->onDelete('cascade');
+			$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
+			$table->foreignUuid('language')->references('id')->on('languages')->onDelete('cascade');
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -40,7 +38,7 @@ class CreateLanguageMapTable extends Migration
 	public function down()
 	{
 		Schema::disableForeignKeyConstraints();
-		Schema::drop('language_map');
+		Schema::drop('language_maps');
 		Schema::enableForeignKeyConstraints();
 	}
 }

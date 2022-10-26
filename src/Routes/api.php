@@ -21,11 +21,14 @@
 |   use Illuminate\Support\Facades\Route;
 |
 |
-|   Route::middleware(['Log:web', 'web'])->group(function() {
-|       Route::get('/', [Controller::class, 'index']);
+|   Route::middleware(['Log:api.{resource}', 'auth:api', 'AccessControl'])->prefix('/')->group(function () use ($controller) {
+|       Route::get('/{resource}' ,['as' => 'user.{resource}' ,'uses' => "$controller@{resource}"]);
 |   });
 */
 
 use Caiocesar173\Utils\Classes\Routes;
+use Illuminate\Support\Facades\Route;
 
-Routes::RequirePath(__DIR__ . '/api');
+Route::middleware('api')->prefix('api')->group(function () {
+    Routes::RequirePath(__DIR__ . '/api');
+});

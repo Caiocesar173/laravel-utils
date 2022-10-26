@@ -18,12 +18,10 @@ class CreateContinentTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('continent', function (Blueprint $table) {
+		Schema::create('continents', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-
 			$table->string('name', 255);
 			$table->string('code', 15);
-
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -38,7 +36,7 @@ class CreateContinentTable extends Migration
 	public function down()
 	{
 		Schema::disableForeignKeyConstraints();
-		Schema::drop('continent');
+		Schema::drop('continents');
 		Schema::enableForeignKeyConstraints();
 	}
 }

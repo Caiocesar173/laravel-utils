@@ -18,9 +18,8 @@ class CreateCountryTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('country', function (Blueprint $table) {
+		Schema::create('countries', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-
 			$table->string('name', 255);
 			$table->string('code', 15);
 			$table->string('capital', 45);
@@ -31,10 +30,7 @@ class CreateCountryTable extends Migration
 			$table->string('latitude', 45);
 			$table->string('longitude', 45);
 			$table->string('geonameid', 255);
-
-			$table->uuid('continent');
-			$table->foreign('continent')->references('id')->on('continent')->onDelete('cascade');
-
+			$table->foreignUuid('continent')->references('id')->on('continents')->onDelete('cascade');
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -49,7 +45,7 @@ class CreateCountryTable extends Migration
 	public function down()
 	{
 		Schema::disableForeignKeyConstraints();
-		Schema::drop('country');
+		Schema::drop('countries');
 		Schema::enableForeignKeyConstraints();
 	}
 }

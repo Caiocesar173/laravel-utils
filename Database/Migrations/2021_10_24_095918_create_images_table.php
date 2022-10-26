@@ -22,7 +22,6 @@ class CreateImagesTable extends Migration
             $table->string('name', 100);
             $table->string('size', 100);
             $table->string('type', 100);
-
             $table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
             $table->timestamps();
             $table->softDeletes();

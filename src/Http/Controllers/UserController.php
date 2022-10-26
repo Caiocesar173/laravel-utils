@@ -18,7 +18,7 @@ class UserController extends ControllerAbstract
 
     protected function getService(): ServiceAbstract
     {
-        return app(UserService::class);
+        return new UserService($this->returnModel);
     }
 
     protected function validatePermission()
@@ -43,8 +43,10 @@ class UserController extends ControllerAbstract
     {
         $this->validatePermission();
 
-        if (!$this->userCanViewOthers)
-            throw new NotAllowedException();
+        if (!$this->userCanViewOthers){
+            if($this->returnModel) return "Usuário não tem premissão para acessar este recurso";
+            else throw new NotAllowedException();
+        }
 
         return parent::index($request);
     }

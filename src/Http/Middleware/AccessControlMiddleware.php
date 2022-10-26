@@ -6,11 +6,10 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use Caiocesar173\Utils\Classes\ApiReturn;
-use Caiocesar173\Utils\Repositories\PermissionMapRepository;
-
 use Caiocesar173\Utils\Enum\StatusEnum;
+use Caiocesar173\Utils\Classes\ApiReturn;
 use Caiocesar173\Utils\Enum\PermissionItemTypeEnum;
+use Caiocesar173\Utils\Repositories\PermissionMapRepository;
 
 class AccessControlMiddleware
 {
@@ -24,6 +23,11 @@ class AccessControlMiddleware
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
+        $jsonRequest = $request->isJson();
+        $permission = app(PermissionMapRepository::class);
+        
+        $permission->setThrowable($jsonRequest);
+
         if ($user->isBlocked)
             return ApiReturn::ErrorMessage("Usuário Bloqueado", 403);
 
@@ -36,7 +40,7 @@ class AccessControlMiddleware
         $routeName = Route::getCurrentRoute()->getName();
         $routeUrl = $request->getUri();
 
-        app(PermissionMapRepository::class)->UserhasItem(auth()->user(), $routeName, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
+        $permission->UserhasItem(auth()->user(), $routeName, 'item', $routeUrl, PermissionItemTypeEnum::ROUTE);
 
         return $next($request);
     }

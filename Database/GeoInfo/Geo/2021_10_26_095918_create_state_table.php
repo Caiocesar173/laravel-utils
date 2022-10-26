@@ -18,17 +18,14 @@ class CreateStateTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('state', function (Blueprint $table) {
+		Schema::create('states', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-
 			$table->string('name', 255);
 			$table->string('code', 255)->nullable();
 			$table->string('geonameid', 255);
 			$table->string('latitude', 255)->nullable();
 			$table->string('longitude', 255)->nullable();
-
-			$table->uuid('country');
-			$table->foreign('country')->references('id')->on('country')->onDelete('cascade');
+			$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
 			$table->timestamps();
 			$table->softDeletes();
@@ -43,7 +40,7 @@ class CreateStateTable extends Migration
 	public function down()
 	{
 		Schema::disableForeignKeyConstraints();
-		Schema::drop('state');
+		Schema::drop('states');
 		Schema::enableForeignKeyConstraints();
 	}
 }
