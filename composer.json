@@ -30,7 +30,7 @@
             "Caiocesar173\\Utils\\": "src/"
         },
         "classmap": [
-            "database/seeders"
+            "Database/Seeders"
         ]
     },
     "config": {
