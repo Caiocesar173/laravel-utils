@@ -4,12 +4,13 @@ namespace Caiocesar173\Utils\Database\Seeders\Authentication;
 
 use Caiocesar173\Utils\Entities\User;
 use Caiocesar173\Utils\Entities\Permission;
-use Caiocesar173\Utils\Exceptions\PermissionGroupNotFound;
 use Caiocesar173\Utils\Services\PermissionMapService;
+use Caiocesar173\Utils\Exceptions\PermissionGroupNotFound;
 
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Schema;
 
 class UserTableSeeder extends Seeder
@@ -53,6 +54,13 @@ class UserTableSeeder extends Seeder
             $save = app(User::class)->create($user);
             if (is_string($save))
                 throw new \Exception($save, 1);
+
+            if (isset($save['avatar'])) unset($save['avatar']);
+            if (isset($save['permissions'])) unset($save['permissions']);
+
+            if ($save->markEmailAsVerified()) {
+                event(new Verified($save));
+            }
 
             if ($this->command)
                 $this->command->info("Inserted user from {$user['name']} [$counter].\n");
