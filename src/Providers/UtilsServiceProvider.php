@@ -42,7 +42,7 @@ class UtilsServiceProvider extends ServiceProvider
             $this->app->singleton(AuthenticationExceptions::class);
             $this->app->register(LaravelPtBRLocalizationServiceProvider::class);
 
-            Passport::routes();
+            //Passport::routes();
             app(Router::class)->aliasMiddleware('AccessControl', AccessControlMiddleware::class);
         }
     }
