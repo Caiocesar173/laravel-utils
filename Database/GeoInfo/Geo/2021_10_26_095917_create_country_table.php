@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateCountryTable.
  */
-class CreateCountryTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -48,4 +48,4 @@ class CreateCountryTable extends Migration
 		Schema::drop('countries');
 		Schema::enableForeignKeyConstraints();
 	}
-}
+};

@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateRequestsLogTable.
  */
-class CreateRequestsLogTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -48,4 +48,4 @@ class CreateRequestsLogTable extends Migration
     {
         Schema::dropIfExists('requests_logs');
     }
-}
+};

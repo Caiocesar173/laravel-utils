@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateSeedsTable.
  */
-class CreateSeedsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -37,4 +37,4 @@ class CreateSeedsTable extends Migration
     {
         Schema::dropIfExists('seeds');
     }
-}
+};

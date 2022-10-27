@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateCityTable.
  */
-class CreateCityTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -44,4 +44,4 @@ class CreateCityTable extends Migration
 		Schema::drop('cities');
 		Schema::enableForeignKeyConstraints();
 	}
-}
+};

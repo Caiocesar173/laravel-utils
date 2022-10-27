@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateStateTable.
  */
-class CreateStateTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -43,4 +43,4 @@ class CreateStateTable extends Migration
 		Schema::drop('states');
 		Schema::enableForeignKeyConstraints();
 	}
-}
+};
