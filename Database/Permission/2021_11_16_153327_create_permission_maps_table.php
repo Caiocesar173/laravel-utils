@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('permission_maps', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->morphs('permission');
-            $table->morphs('responsable');
+            $table->uuidMorphs('permission');
+            $table->uuidMorphs('responsable');
             $table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
             $table->timestamps();
             $table->softDeletes();
