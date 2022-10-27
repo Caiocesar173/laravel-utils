@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateLanguageTable.
  */
-class CreateLanguageMapTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -41,4 +41,4 @@ class CreateLanguageMapTable extends Migration
 		Schema::drop('language_maps');
 		Schema::enableForeignKeyConstraints();
 	}
-}
+};

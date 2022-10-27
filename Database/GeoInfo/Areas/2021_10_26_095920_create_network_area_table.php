@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateNetworkAreaTable.
  */
-class CreateNetworkAreaTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -46,4 +46,4 @@ class CreateNetworkAreaTable extends Migration
         Schema::drop('network_areas');
         Schema::enableForeignKeyConstraints();
 	}
-}
+};

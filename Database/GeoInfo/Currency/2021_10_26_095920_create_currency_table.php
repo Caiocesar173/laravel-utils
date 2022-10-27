@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateCurrencyTable.
  */
-class CreateCurrencyTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -46,4 +46,4 @@ class CreateCurrencyTable extends Migration
 		Schema::drop('currencies');
 		Schema::enableForeignKeyConstraints();
 	}
-}
+};

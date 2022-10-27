@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreatePhoneAreaTable.
  */
-class CreatePhoneAreaTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -42,4 +42,4 @@ class CreatePhoneAreaTable extends Migration
         Schema::drop('phone_areas');
         Schema::enableForeignKeyConstraints();
 	}
-}
+};

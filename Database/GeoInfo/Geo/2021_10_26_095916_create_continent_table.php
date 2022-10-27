@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateContinentTable.
  */
-class CreateContinentTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -39,4 +39,4 @@ class CreateContinentTable extends Migration
 		Schema::drop('continents');
 		Schema::enableForeignKeyConstraints();
 	}
-}
+};

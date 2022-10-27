@@ -9,7 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateTimeZoneTable.
  */
-class CreateTimeZoneTable extends Migration
+return new class extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -42,4 +42,4 @@ class CreateTimeZoneTable extends Migration
 		Schema::drop('time_zones');
 		Schema::enableForeignKeyConstraints();
 	}
-}
+};
