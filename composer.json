@@ -3,18 +3,18 @@
     "description": "Utils Laravel Package",
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "doctrine/dbal": "^3.4",
-        "laravel/passport": "^10.4",
+        "laravel/passport": "^11.2",
         "laravel/socialite": "^5.5",
-        "laravel/ui": "^3.4",
+        "laravel/ui": "^4.0",
         "lucascudo/laravel-pt-br-localization": "^1.2",
-        "owen-it/laravel-auditing": "^12.0",
+        "owen-it/laravel-auditing": "^13.0",
         "prettus/l5-repository": "^2.7",
         "spatie/laravel-sluggable": "^3.4",
-        "spatie/laravel-translatable": "^4.6",
+        "spatie/laravel-translatable": "^6.0",
         "stevebauman/location": "^6.2",
-        "watson/validating": "^6.1"
+        "watson/validating": "^7.0"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",
