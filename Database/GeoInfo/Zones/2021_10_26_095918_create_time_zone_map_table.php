@@ -20,8 +20,6 @@ return new class extends Migration
 	{
 		Schema::create('time_zone_maps', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-			$table->uuid('zone');
-			$table->uuid('country');
 			$table->foreignUuid('zone')->references('id')->on('time_zones')->onDelete('cascade');
 			$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
