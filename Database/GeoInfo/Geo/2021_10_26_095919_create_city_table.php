@@ -23,7 +23,6 @@ return new class extends Migration
 			$table->string('name', 255);
 			$table->string('code', 255)->nullable();
 			$table->string('geonameid', 255);
-			$table->uuid('state');
 			$table->string('latitude', 255)->nullable();
 			$table->string('longitude', 255)->nullable();
 			$table->foreignUuid('state')->references('id')->on('states')->onDelete('cascade');
