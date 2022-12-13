@@ -20,8 +20,6 @@ return new class extends Migration
 	{
 		Schema::create('language_maps', function (Blueprint $table) {
 			$table->uuid('id')->primary();
-			$table->uuid('country');
-			$table->uuid('language');
 			$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
 			$table->foreignUuid('language')->references('id')->on('languages')->onDelete('cascade');
 			$table->enum('status', StatusEnum::lists())->default(StatusEnum::ACTIVE);
