@@ -18,15 +18,13 @@ abstract class ControllerAbstract extends Controller
     /**
      * This varible controls the ability to return an api response or a model for a view
      */
-    public $returnModel = null;
+    public $returnModel = false;
 
     abstract protected function getService(): ServiceAbstract;
 
     public function __construct(Request $request)
     {
-        if ($request->isJson())
-            $this->returnModel = false;
-
+        $this->returnModel = !$request->isJson();
         $this->getService()->setReturnType($this->returnModel);
 
         App::singleton(
