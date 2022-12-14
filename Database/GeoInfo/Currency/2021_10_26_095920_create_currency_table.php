@@ -25,7 +25,7 @@ return new class extends Migration
 			$table->string('symbol', 255);
 
 			if (env('UTILS_GEOLOC_ENABLE'))
-				$table->foreignUuid('country')->references('id')->on('countries')->onDelete('cascade');
+				$table->foreignUuid('country')->nullable()->references('id')->on('countries')->onDelete('cascade');
 			else
 				$table->string('country', 100)->nullable();
 

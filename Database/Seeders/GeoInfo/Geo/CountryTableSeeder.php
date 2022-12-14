@@ -3291,7 +3291,7 @@ class CountryTableSeeder extends Seeder
                 throw new \Exception($save, 1);
             
             if($this->command)                
-                $this->command->info("Inserted country {$country['name']} from continent $continent->name [$counter].");
+                $this->command->info("Inserted country {$country['name']} from continent $continent->name [$counter].\n");
             else
                 echo("Inserted country {$country['name']} from continent $continent->name [$counter].\n");
 
