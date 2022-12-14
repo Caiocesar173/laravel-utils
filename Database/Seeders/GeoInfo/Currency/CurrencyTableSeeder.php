@@ -682,7 +682,7 @@ class CurrencyTableSeeder extends Seeder
                 "name" => "Euro",
             ],
             [
-                "country" => "NZL",
+                "country" => "NZ",
                 "symbol" => "$",
                 "code" => "NZD",
                 "name" => "New Zealand Dollar",
