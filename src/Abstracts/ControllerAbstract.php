@@ -15,16 +15,11 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 
 abstract class ControllerAbstract extends Controller
 {
-    /**
-     * This varible controls the ability to return an api response or a model for a view
-     */
-    public $returnModel = false;
-
     abstract protected function getService(): ServiceAbstract;
 
     public function __construct(Request $request)
     {
-        $this->returnModel = !$request->isJson();
+        parent::__construct($request);
         $this->getService()->setReturnType($this->returnModel);
 
         App::singleton(
