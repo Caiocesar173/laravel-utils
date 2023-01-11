@@ -58,7 +58,7 @@ trait RepositoryServiceProviderTrait
         if (is_array($namespaceLines)) {
             $namespaceLine = array_shift($namespaceLines);
             $match = [];
-            preg_match('/^namespace (.*);$/', $namespaceLine, $match);
+            preg_match('/^namespace (.*);/', $namespaceLine, $match);
             $namespace = array_pop($match);
         }
 
