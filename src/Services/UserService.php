@@ -26,7 +26,7 @@ class UserService extends ServiceAbstract
 
     public function create($request)
     {
-        if(isset($request['password']))
+        if (isset($request['password']))
             $request['password'] = Hash::make($request['password']);
 
         return $this->getRepository()->create($request);
@@ -45,12 +45,12 @@ class UserService extends ServiceAbstract
     {
         $user = $this->find($id);
         $user->avatar = $user->avatar;
-        return ApiReturn::SuccessMessage('Informações', 200, $user);
+        return $user;
     }
 
     public function permission($id)
     {
         $user = $this->find($id);
-        return ApiReturn::SuccessMessage('Permissões', 200, $user->permissions);
+        return $user->permissions;
     }
 }
